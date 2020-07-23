@@ -9,7 +9,7 @@
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#000">
 <title>关于 | xieincz的博客</title>
-<link rel="shortcut icon" href="/favicon.ico?v=1595463002819">
+<link rel="shortcut icon" href="/favicon.ico?v=1595463341038">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
 <link
@@ -603,6 +603,27 @@
             
             
             
+  
+    
+      <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'ab180432a03e503536f9',
+    clientSecret: '294bf26ddc6705a8d97dc7c676f0a63e27900302',
+    repo: 'xieincz.github.io',
+    owner: 'xieincz',
+    admin: ['xieincz'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+  gitalk.render('gitalk-container')
+</script>
+    
+    
   
 
           </div>
