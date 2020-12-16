@@ -8,7 +8,7 @@
 <meta name="keywords" content="xieincz的个人博客">
 <meta name="description" content="温故而知新">
 <meta name="theme-color" content="#000">
-<title>xieincz的博客</title>
+<title>面对父母年老，伴随的不可避免的（非贬义），你怎么办？ | xieincz的博客</title>
 <link rel="shortcut icon" href="/favicon.ico?v=1608131988651">
 <link rel="stylesheet" href="/media/css/pisces.css">
 <link rel="stylesheet" href="/media/fonts/font-awesome.css">
@@ -58,6 +58,8 @@
 </script>
 
 
+  <meta name="description" content="面对父母年老，伴随的不可避免的（非贬义），你怎么办？" />
+  <meta name="keywords" content="" />
 </head>
 
 <body>
@@ -172,10 +174,25 @@
   <div class="main-continer">
     
     <div
-      class="section-layout  pisces">
+      class="section-layout pisces ">
       <div class="section-layout-wrapper">
-        <div id="sidebarMeta" class="sidebar">
-    
+        
+
+<div class="sidebar">
+  
+    <div class="sidebar-box box-shadow-wrapper bg-color right-motion" id="sidebar">
+      
+        <div class="post-list-sidebar">
+          <div class="sidebar-title">
+            <span id="tocSideBar" class="sidebar-title-item sidebar-title-active language" data-lan="index">文章目录</span>
+            <span id="metaSideBar" class="sidebar-title-item language" data-lan="preview">站点概览</span>
+          </div>
+        </div>
+      
+      <div class="sidebar-body pisces" id="sidebar_body">
+        
+          
+            
 <div class="sidebar-wrapper box-shadow-wrapper bg-color">
   <div class="sidebar-item">
     <img class="site-author-image right-motion" src="/images/avatar.png"/>
@@ -239,64 +256,550 @@
 
 
 </div>
+          
+        
+      </div>
+    </div>
+  
 </div>
 <script>
-  let sidebarMeta = document.querySelector('#sidebarMeta');
-  let scheme = 'pisces';
-  let sidebarWrapper = document.querySelector('.sidebar-wrapper');
-  if (sidebarMeta && (scheme === 'pisces' || scheme === 'gemini')) {
-    document.addEventListener('scroll', function(e) {
-      if (document.scrollingElement.scrollTop > parseInt(sidebarMeta.style.marginTop) + 10) {
-        sidebarWrapper.classList.add('home-sidebar-fixed')
-      } else {
-        sidebarWrapper.classList.remove('home-sidebar-fixed')
+  const SIDEBAR_TITLE_ACTIVE = 'sidebar-title-active';
+  const SIDEBAR_BODY_ACTIVE = 'sidebar-body-active';
+  const SLIDE_UP_IN = 'slide-up-in';
+
+  let sidebar = document.querySelector('#sidebar'),
+  tocSideBar = document.querySelector('#tocSideBar'),
+  metaSideBar = document.querySelector('#metaSideBar'),
+  postToc = document.querySelector('#post_toc'),
+  postSiteMeta = document.querySelector('#post_side_meta'),
+  sidebarTitle = document.querySelector('.sidebar-title'),
+  sidebarBody = document.querySelector('#sidebar_body');
+
+  tocSideBar && tocSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  metaSideBar && metaSideBar.addEventListener('click', (e) => {
+    toggleSidebar(e);
+  });
+
+  function toggleSidebar(e) {
+    let currentTitle = document.querySelector("."+SIDEBAR_TITLE_ACTIVE);
+    if (currentTitle == e.srcElement) {
+      return ;
+    }
+    let current, showElement, hideElement;
+    if (e.srcElement == metaSideBar) {
+      showElement = postSiteMeta;
+      hideElement = postToc;
+    } else if (e.srcElement == tocSideBar){
+      showElement = postToc;
+      hideElement = postSiteMeta;
+    }
+    currentTitle.classList.remove(SIDEBAR_TITLE_ACTIVE);
+    e.srcElement.classList.add(SIDEBAR_TITLE_ACTIVE);
+
+    window.Velocity(hideElement, 'stop');
+    window.Velocity(hideElement, 'transition.slideUpOut', {
+      display: 'none',
+      duration: 200,
+      complete: function () {
+        window.Velocity(showElement, 'transition.slideDownIn', {
+          duration: 200
+        });
       }
-    });
+    })
+    hideElement.classList.remove(SIDEBAR_BODY_ACTIVE);
+    showElement.classList.add(SIDEBAR_BODY_ACTIVE);
   }
-  </script>
-        <div class="section-box tag-line box-shadow-wrapper">
-          <section class="section tags-section posts-expand bg-color">
-            <div class="padding-wrapper">
-  <div class="tag-timeline-box">
-    <div class="tag-timeline-wrapper">
-      <div class="tag-timeline-title">
-        <h2>
-          hello
-          <small class="language" data-lan="tag">标签</small>
-        </h2>
-      </div>
+
+  postToc && postToc.addEventListener('transitionend', function() {
+    this.classList.remove(SLIDE_UP_IN);
+  });
+
+  if (sidebarBody) {
+    if (sidebarBody.classList.contains('pisces') || sidebarBody.classList.contains('gemini')) {
+      let hasFix = false;
+      let scrollEl = document.querySelector('.main-continer');
+      let limitTop = document.querySelector('#nav_ul').children.length * 42 + 162;
+      window.addEventListener('scroll', function(e) {
+        if (document.scrollingElement.scrollTop >= limitTop) {
+          if (!hasFix) {
+            sidebar.classList.add('sidebar-fixed');
+            hasFix = true;
+          }
+        } else {
+          if (hasFix) {
+            sidebar.classList.remove('sidebar-fixed');
+            hasFix = false;
+          }
+        }
+      });
+    }
+  }
+  
+</script>
+        <div class="section-box box-shadow-wrapper">
+          <div class="section bg-color post post-page">
+            <section class="post-header">
+  <h1 class="post-title">
+    <a class="post-title-link" href="https://xieincz.github.io/post/mian-dui-fu-mu-nian-lao-ban-sui-de-bu-ke-bi-mian-de-fei-bian-yi-ni-zen-me-ban/">
+      面对父母年老，伴随的不可避免的（非贬义），你怎么办？
+    </a>
+  </h1>
+  <div class="post-meta">
+    
+    <span class="meta-item pc-show">
+      <i class="fa fa-calendar-o"></i>
+      <span class="language" data-lan="publish">发布于</span>
+      <span class="publish-time" data-t="2020-12-16 23:17:34">2020-12-16</span>
+      <span class="post-meta-divider pc-show">|</span>
+    </span>
+    
+    <span class="meta-item">
+      <i class="fa fa-clock-o"></i>
+      <span>31<span class="language" data-lan="minute">分钟</span></span>
+    </span>
+    <span class="meta-item">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-file-word-o"></i>
+      <span>7913<span class="pc-show language" data-lan="words">字数</span></span>
+    </span>
+    
+    
+    
+    <span id="/post/mian-dui-fu-mu-nian-lao-ban-sui-de-bu-ke-bi-mian-de-fei-bian-yi-ni-zen-me-ban/" data-flag-title="面对父母年老，伴随的不可避免的（非贬义），你怎么办？" class="meta-item pc-show leancloud_visitors">
+      <span class="post-meta-divider">|</span>
+      <i class="fa fa-eye"></i>
+      <span><span class="language" data-lan="view">浏览量</span>：<span class="leancloud-visitors-count"></span></span>
+    </span>
+    
+  </div>
+</section>
+            <div class="post-body next-md-body" id="post_body">
+              <p>本文章只是存档</p>
+<pre><code> xiaopenyou · 2019-02-17 20:04:52 +08:00 · 6227 次点击  
+</code></pre>
+<p>这是一个创建于 668 天前的主题，其中的信息可能已经有所发展或是发生改变。<br>
+身边不少同学朋友，最近几年，都有过类似感慨……</p>
+<p>比如我同学 A，他妈妈被某传销组织忽悠，买各种保健品，去年一年，花了差不多十几万<br>
+比如我朋友 B，他爸爸是心理学毕业的，退休以前是报社副主编，但最近几年，也开始在微信转发各种伪科学和假新闻了……</p>
+<p>促使我发这个帖的，是我爹，刚刚强烈要求我退订，给家里选的某本地知名度第一的品牌桶装水，因为它的商品名叫“矿物质水”，我爹说，所谓矿物质水，是往自来水里加的矿物质，不健康。他要选之前他自己订的、另外一个名不见经传的、都没听过的牌子的“山泉水”，他说这一家是从山里打的天然泉水，至于为什么这么认为，我觉得不是因为他去厂址考察过，仅仅是因为后者的品牌名称里有“山泉”俩字，他有一天还叫我在网上搜一下，厂址是不在山里。我自然希望选前面那家，因为信息有限的情况下，我是尽可能选大品牌、知名度最高的，不保证能安全，但至少能增加安全的概率。</p>
+<p>在网上做了番功课后，有股很想跟爹转述下国标 GB8537 （天然矿泉水）和 GB19298 的关系，甭管商品名多么天花乱坠，无非都是同一标准 GB5749 （包装饮用水）下的产物，只要真达标了，差别不大。爹如果不信的话，《标准化法》第二十四条规定，企业产品必须标注所执行的标准，可以请他问问这家客服，他们所采用的标准，以及原产地是地表水还是公共供水系统水源（自来水）……</p>
+<p>但突然又不想说服了，因为这不是单独一件事的问题，而是一系列连锁的问题。感觉这个事即使单独讲明白了，将来这类事还是无穷无尽的。</p>
+<p>所以，发个帖想问问大家，你有没类似感受，你是怎么办的呢？</p>
+<p>PS: 楼主现在除了求助帖，几乎不在网上说话，就是因为讨论环境太差，杠精太多。但这个帖是真想听下大家意见，所以希望攻击型或反社会人格的那部分人，请嘴下留情。看不惯，聊不来，点右上角关闭网页即可，没必要夹枪带棒的怼一个又没侵犯你利益的陌生人。谢谢，祝开心</p>
+<p>6227 次点击  ∙  40 人收藏  加入收藏  Tweet  Weibo  忽略主题  感谢<br>
+厂址 矿物质 山泉 山里92 条回复  •  2019-02-21 23:27:27 +08:00<br>
+mooncakejs		        Reply    1<br>
+mooncakejs   2019-02-17 20:14:17 +08:00<br>
+A 是子女陪伴太少，卖保健品的天天爸爸妈妈爷爷奶奶张嘴就叫，老人即使知道他是骗的也会买。<br>
+B 我说不上来，可能是领导当惯了，想获得舆论制高点。<br>
+至于你的爸爸，是他老了，感觉不当家了，他做的决定没有权威了。我认为你太没必要，矿泉水而已，能上市销售的一般不会有太大问题，你连这个也管，难怪老人家不开心了。<br>
+Flobit		        Reply    2<br>
+Flobit   2019-02-17 20:18:42 +08:00 via Android   ❤️ 19<br>
+我爸妈有时候也会这样，虽然我在外地，我仍会一遍又一遍的解释，说服他们，他们并不是深信不疑。多点耐心，就像小时候他们教我们一样。<br>
+smdbh		        Reply    3<br>
+smdbh   2019-02-17 20:20:54 +08:00<br>
+努力赚钱，做好保底<br>
+lihua		        Reply    4<br>
+lihua   2019-02-17 20:22:20 +08:00 via Android   ❤️ 1<br>
+忽然想到，等自己老了，会不会也变成朋友圈里的怪老头。<br>
+xiaopenyou		        Reply    5<br>
+xiaopenyou   2019-02-17 20:27:33 +08:00   ❤️ 5<br>
+@lihua #4 家庭的美好就是，即使你变成怪老头，仍然有一群爱你的亲人<sup>_</sup><br>
+haimall		        Reply    6<br>
+haimall   2019-02-17 20:31:27 +08:00 via Android<br>
+所以年轻的我们从现在开始要学会放弃固执，学会接受。<br>
+父母都是 固执的偏见导致的跟子女的冲突，并不是愚昧导致的<br>
+JK9993		        Reply    7<br>
+JK9993   2019-02-17 20:31:38 +08:00<br>
+你这样说国标什么的你爹也不懂吧，尽量通俗直白点才能好说服<br>
+xinlinglu		        Reply    8<br>
+xinlinglu   2019-02-17 20:36:49 +08:00<br>
+他们想健康的活着，不想成为你的拖累，这有错吗！当你的生命也走到他们的年龄段的时候，面对子女、面对生活的压力，很有可能你也会如此，这与人生阅历和学识水平无关。大多数人对于健康的执着是会迷失或者说打乱本有的认知的。如果你的家庭经济允许，就有限度的由着他们“胡闹”一把，如果你的家庭经济不允许，就给他们的生命与健康一份你力所能及的保障。<br>
+另外说一句，我见过很多高官、教授年龄到了那个阶段都会如此，上个世纪的气功热等都是缩影，不要以为信息时代你自己清楚一切，有的时候他们心里也清楚，只是~~不说了。<br>
+kernel		        Reply    9<br>
+kernel   2019-02-17 20:37:36 +08:00<br>
+没办法的，这是命。还好只是个水，出不了事，你就依你爸好了。</p>
+<p>我丈母娘子女都在身边陪伴，生活舒适，还是爆买保键品，我试过很多次说服，无效<br>
+（比如高血压，长期不吃医院正规药吃保键品,还好似乎也没事，也保不准那个三无药品里面含西药压压药了）<br>
+frylkrttj		        Reply    10<br>
+frylkrttj   2019-02-17 20:39:52 +08:00   ❤️ 1<br>
+教父母上网用 google，可解<br>
+wolflone		        Reply    11<br>
+wolflone   2019-02-17 20:48:54 +08:00 via Android<br>
+这还真没办法，我家里老人保健品都骗了几万块了。比如说了别喝鸿茅药酒，还不以为耻反以为荣沾沾自喜的……其余智商税更加数不胜数<br>
+我反正现在是不管了，就作吧……反正也不是我的钱<br>
+xiaopenyou		        Reply    12<br>
+xiaopenyou   2019-02-17 20:51:17 +08:00<br>
+@kernel #9 偶也这么想的，反正烧开了都能喝，他开心就行，所以转身跑来发帖，并没有真去唠叨</p>
+<p>只是联想到，以后若有类似的 事关原则的事情呢，所以想听听大家情况。</p>
+<p>A 跟他妈妈为传销这事，从早期平声静气的解释、到后来带情绪的争论、再到现在不再谈这事（因为一谈就会吵到挂电话），说实话我换成他位置，也不知道该咋办。偶安慰他说，就当是支持父母业余爱好的钱吧，玩个鸟、收藏个字画，也得花钱呢，但就怕那些保健品是假冒伪劣的，不但不保健，还危害健康……<br>
+kernel		        Reply    13<br>
+kernel   2019-02-17 21:02:53 +08:00<br>
+@xiaopenyou 是。而且如果国家不管的话，到我们这代老了肯定还是一样，毕竟现在这么多人年轻脑子好时都能是中医粉，老了都是潜在非菜<br>
+autoxbc		        Reply    14<br>
+autoxbc   2019-02-17 21:04:27 +08:00 via iPhone   ❤️ 11<br>
+我总是脑补一个画面，百度员工不停劝父母千万别用百度，那上面的骗子都是我给弄上去的<br>
+noNOno		        Reply    15<br>
+noNOno   2019-02-17 21:17:21 +08:00<br>
+这问题上帝才能解决,赶紧改版吧,改一改人一老就接受力下降的设定-.-手动狗头<br>
+birdrally		        Reply    16<br>
+birdrally   2019-02-17 21:17:47 +08:00 via iPhone<br>
+小时候，你想要的玩具，游戏，在父母眼里也是废物，但止不住你的央求，买了，买的是你的开心，只要在可控的范围内，顺他意<br>
+takato		        Reply    17<br>
+takato   2019-02-17 21:20:30 +08:00<br>
+有一个问题，和这个问题很像，那就是。。“传火吗？”(from dark soul)<br>
+NonClockworkChen		        Reply    18<br>
+NonClockworkChen   2019-02-17 21:27:58 +08:00<br>
+我目前对这种愚昧的看法是本质缺乏思考力，容易信别人。<br>
+我对我妈的教育是引用了知乎上一个问题：</p>
+<p>不抽烟不喝酒的男人怎么在社会上生存？<br>
+谁说什么你都信才真的没办法在这个社会生存下去……<br>
+DeutschXP		        Reply    19<br>
+DeutschXP   2019-02-17 21:32:35 +08:00 via iPhone<br>
+把矿物质水换掉挺好的啊，你是对所谓的大品牌和国标有什么误解么。<br>
+话说回来，家里人用水不多的话，桶装水可真算不上啥健康，还不如自来水。<br>
+jssyxzy		        Reply    20<br>
+jssyxzy   2019-02-17 21:38:42 +08:00<br>
+找点事情做吧，人闲下来就容易胡思乱想。<br>
+txwd		        Reply    21<br>
+txwd   2019-02-17 21:41:17 +08:00<br>
+这或许是自然规律、代沟吧，只能尽力了。长辈一般不会听晚辈的，听外人的，也不会听家人的。<br>
+jedicxl		        Reply    22<br>
+jedicxl   2019-02-17 21:41:26 +08:00<br>
+分情况</p>
+<p>如果是传销一类的，最好的办法是多陪他们聊天，潜移默化传播正确的观念和知识，会有作用。陪伴最有用<br>
+如果是信奉朋友圈等等垃圾文章信息的，不用太在意，其实这就是他们想努力融入年轻人网络化社交的一种方式，不代表他们真的深信不疑，作用类似我们吃饭喝酒时的聊天打屁<br>
+如果是养生保健品吃药之类和健康直接相关的，更尤其是中医药方面的，需要耐心。能解释的就解释，能沟通的就沟通。沟通不下来的，算了。这是一个人知识获取习惯所决定的，他们这一代人获取知识的方式就是书和电视，网络对于他们来说是不可信的渠道。再加上证实性偏见这些最常见的心理误区，老年人基本上很难像年轻人一样能多角度、多渠道的看待这些知识和信息，只会不断强化已有的知识体系<br>
+ddlee		        Reply    23<br>
+ddlee   2019-02-17 21:43:14 +08:00 via Android<br>
+我提供两个想法跟大家交流：</p>
+<ol>
+<li>制造陌生感，让父母不自觉地放下权威，跟子女处在同一知识水平上考虑问题</li>
+<li>试图提供自己方法论水平的辩护和理由，并鼓励父母也这样做<br>
+jssyxzy		        Reply    24<br>
+jssyxzy   2019-02-17 21:57:31 +08:00<br>
+对某些东西太焦虑了吧。<br>
+讲道理只能指标，解决内心的才能治本。<br>
+我瞎说的，未必正确。<br>
+lsls618		        Reply    25<br>
+lsls618   2019-02-17 22:37:20 +08:00<br>
+定期带父母检查身体,多交流<br>
+zro		        Reply    26<br>
+zro   2019-02-17 23:12:00 +08:00<br>
+跟楼主情况类似，看微信的那种垃圾养生文多了，现在再看以前一直看的养生电视节目，直接就说节目请的专家都是吃屎屙饭的。。</li>
+</ol>
+<p>@frylkrttj #10 教过，还是别人发来的微信比较有说服力，通俗又易懂，一点都不是在一本正经的胡说八道。<br>
+ydirel		        Reply    27<br>
+ydirel   2019-02-18 00:01:56 +08:00   ❤️ 1<br>
+有必要干涉父母的经济问题<br>
+uuair		        Reply    28<br>
+uuair   2019-02-18 00:08:54 +08:00<br>
+想像你从出生开始时候那个弱智，有可能连屎都会往嘴里放，更别说各种非常容易发生的意外。那时候父母没人嫌弃，也花了大量的精力看着你。。如今你一样面对他们而已。<br>
+fox0001		        Reply    29<br>
+fox0001   2019-02-18 00:21:12 +08:00 via Android<br>
+这事很无奈，我家的也一样，居然相信路边的白内障治疗手术…<br>
+zro		        Reply    30<br>
+zro   2019-02-18 00:37:15 +08:00<br>
+@uuair #28 道理都懂，问题是他们仗着自己所谓的人生经验比你吃盐还多，不听你的你能怎么办？<br>
+shenmegui		        Reply    31<br>
+shenmegui   2019-02-18 00:45:40 +08:00<br>
+https://weibo.com/5040955225/Hh4pAdPpL<br>
+fuma255		        Reply    32<br>
+fuma255   2019-02-18 00:47:54 +08:00 via Android<br>
+我家也一样，我爸去年轻信赤脚医生口服秘方治疗腿痛风，一个月后胃出血，还做了胃镜，那赤脚医生还玩营销前 100 个人收 50，后面的翻十倍。我妈跟老年大学的混一起，最近还玩起了拼多多，许多有心机的老年人混在里面推销产品。微信，今日头条，百毒，抗日神剧……害了我一家人，没能及时把父母从这些垃圾信息中救出来，以后更难了，感觉他们像已经半身入土的活人，多一些陪伴和耐心吧，只要他们不受到伤害就好，暗中保护，经济方面要适当掌握并挪用。<br>
+zro		        Reply    33<br>
+zro   2019-02-18 01:11:07 +08:00<br>
+@fuma255 #32 我家占微信和抗日神剧。。。唉，低俗的内容很容易入侵的<br>
+LxExExl		        Reply    34<br>
+LxExExl   2019-02-18 01:55:55 +08:00 via iPhone   ❤️ 1<br>
+我把我爸妈的钱都转到了自己名下了 他们存款也就几万 不担心在钱上受骗</p>
+<p>平时我会给他们发 反鸡汤 反民科的文章 也会给他们发 震惊 大妈买了这个竟卧床不起 多少也能对冲一下<br>
+Yvette		        Reply    35<br>
+Yvette   2019-02-18 06:27:04 +08:00<br>
+我自己给我爸妈摆事实讲道理，讲为什么那些把戏是骗人的，讲双盲实验，讲三段论，讲行业背后的利益关系，讲现代医学的发展和传统医学的局限。总之就是他陪们聊天，而且有理有据，让他们信你这一套而不是卖保健品的那些人的那一套。<br>
+ryd994		        Reply    36<br>
+ryd994   2019-02-18 07:04:25 +08:00 via Android<br>
+@LxExExl naive 了<br>
+还可以骗你拿身份证去贷款<br>
+我外婆就被这样骗过<br>
+LxExExl		        Reply    37<br>
+LxExExl   2019-02-18 09:18:31 +08:00<br>
+@ryd994 那不会...我给他们讲了裸贷门 而且他们也没有贷款的需求...<br>
+TomVista		        Reply    38<br>
+TomVista   2019-02-18 09:42:14 +08:00<br>
+同感,很难受,过年期间想了无数办法让父母戒头条快手抖音等.<br>
+amon		        Reply    39<br>
+amon   2019-02-18 09:54:11 +08:00   ❤️ 1<br>
+@TomVista 当年你父母是不是也是这样想让你戒掉游戏机、网吧的？</p>
+<p>沟通是万能的解药，今年春晚不是演了吗，如果给父母多一些交流，多一些陪伴，他们何必需要去买那些保健品、关心那些稀奇古怪的东西？还不是因为他们缺乏安全感。<br>
+而这些安全感，只有儿女能给他们了。<br>
+MarioLuisGarcia		        Reply    40<br>
+MarioLuisGarcia   2019-02-18 09:58:17 +08:00<br>
+我妈以前用我爸买回家那些传销牙膏，质量太差都没有保护牙齿牙龈的效力，后来牙齿出问题去补牙花了一万多。<br>
+JamesR		        Reply    41<br>
+JamesR   2019-02-18 09:58:33 +08:00<br>
+很简单，这个问题根本上是因为：家里你说了不算。<br>
+父母头脑清楚时候没问题，年纪大了，还他们说了算，肯定不行，要你说了算。尽早把家里关系弄成你说了算就行了。<br>
+MarioLuisGarcia		        Reply    42<br>
+MarioLuisGarcia   2019-02-18 10:05:00 +08:00   ❤️ 2<br>
+我回家知道当然有痛心疾首和他们说了这事。然后，我去超市买了十几支佳洁士牙膏放家里。<br>
+你猜怎么着，今年过年回家，我发现我家的牙膏用的是佳洁士的了。（我买的已经用完了）<br>
+所以，今年回家发现它们在用隆力奇的沐浴液（一个直销品牌）和一个根本不知道哪的野鸡厂产的洗手液。<br>
+我又如法炮制买了些好的洗手液和沐浴液京东快递到家。根本不用说服。<br>
+发现浴室里用了几年的飞科吹风筒不好用，给他们买个松下的。</p>
+<p>这个事情有多个角度可以去理解的，一个是谁对谁错的角度，一个是关心和被关心的角度，如果从后面的角度出发的话，达成共识的可能性会大一些。<br>
+TomVista		        Reply    43<br>
+TomVista   2019-02-18 10:05:56 +08:00<br>
+@amon 尴尬,父母管我,我不接受;我管父母,父母不接受. 你不说的话,我都想不到当年父母也这么看待我打游戏的.....</p>
+<p>不知道怎么解决,争取多交流吧..<br>
+Shook		        Reply    44<br>
+Shook   2019-02-18 10:08:04 +08:00<br>
+@TomVista 为啥要戒抖音快手，这听着像是要戒上网的意思<br>
+XxxxD		        Reply    45<br>
+XxxxD   2019-02-18 10:17:22 +08:00<br>
+或者你可以试下以毒攻毒<br>
+你也多找几条说明原来那个矿泉水的新闻说服他</p>
+<p>当然啦，还是要多陪陪父母，让他们的生活充实不无聊，多看一点比较公正的消息等<br>
+Jay54520		        Reply    46<br>
+Jay54520   2019-02-18 10:19:53 +08:00 via iPhone<br>
+@smdbh 赚钱怎么可能有花钱快！比如上面所说的进入传销组织，这样一被骗就是十几万或者终生积蓄。<br>
+TomVista		        Reply    47<br>
+TomVista   2019-02-18 10:20:58 +08:00<br>
+@shook 我爸在拍买主播那里买东西,现在我家一致决定,可以买玩的东西,关系到衣食住行的绝对不允许.ps:我爸买了一套酒,叫四大美人,买回来,我添了一口就都给他扔了.</p>
+<p>我妈天天看一个大妈的直播,无法形容那个大妈.....无法理解.... 我妈突然高血压,要去找快手上的大仙算命...</p>
+<p>头条上的智障新闻,不多说..<br>
+uuair		        Reply    48<br>
+uuair   2019-02-18 10:21:26 +08:00   ❤️ 2<br>
+@zro #30 百度一段鸡汤看看啊：<br>
+于礼有不孝者三，事谓阿意曲从，陷亲不义，一不孝也；家贫亲老，不为禄仕，二不孝也；不娶无子，绝先祖祀，三不孝也。<br>
+用现代白话文来表述就是：一、对父母的过错“阿意曲从”，使父母陷入“不义”；二、家境贫困，父母年老，却不愿当官求俸禄以供养父母；三、不娶妻子，没有儿子，断绝了后代。</p>
+<p>所以你看，劝说一件特别难的事，从古人开始就是如此，更别说现在了。。。既然延续了 5000 年的这事，而且都上升到不孝的高度了，所以帮助父母任重道远啊，选好方法，别争执，别让他们生气着急吧。。<br>
+sm0king		        Reply    49<br>
+sm0king   2019-02-18 10:28:04 +08:00<br>
+给你讲个故事吧：<br>
+这个故事发生在我发小身上，他是学物理的，理论物理，量子物理。他的专业，很难解释在做什么的吧?就算给在做的各位很多地方也不是很好讲的清楚。然后他第一次见丈母娘的时候，是这么跟她未来的丈母娘解释自己的专业的，先讲了自己的专业，然后指着家里的节能灯说：这个灯可以发光就是量子物理的一种应用。他未来丈母娘一下子就简单的了解了，虽然差别很远，但不再像以前那么虚无缥缈了。</p>
+<p>我想说的是，当你只看到结果，并指点父母做的不够好的时候，有没有想过原因，有没有换个姿势，屈尊坐下来平心静气的听听爸妈怎么说的，耐心的用他们听的懂的去解释给他们听？而不是只是说教。<br>
+Yiki		        Reply    50<br>
+Yiki   2019-02-18 10:31:20 +08:00<br>
+哎想到我爸<br>
+也是因为各种保健品药品的噱头搞这些伪传销倒腾走了几十万<br>
+我也觉得他脑子有病<br>
+但是有什么办法呢<br>
+搞得我也想发帖救助了<br>
+钱是回不来了，只能自己吞，每次回家都想叫他清醒一点<br>
+SeaRecluse		        Reply    51<br>
+SeaRecluse   2019-02-18 10:38:10 +08:00<br>
+只能说你跺你也麻，都是时候未到🐶<br>
+ryd994		        Reply    52<br>
+ryd994   2019-02-18 10:41:33 +08:00 via Android<br>
+@LxExExl 我的意思是，有身份证，有本人，其实绝大多数手续都能办了。所以身份证最好也控制住<br>
+MarioLuisGarcia		        Reply    53<br>
+MarioLuisGarcia   2019-02-18 10:43:47 +08:00<br>
+@Yiki 你可以试着把家里的财务管起来（当然这是个很大的责任）<br>
+lewis04		        Reply    54<br>
+lewis04   2019-02-18 10:44:51 +08:00<br>
+同感,感觉我爸已经头脑不清醒,再加上脾气暴躁,你有耐性跟他解释,他还没有耐心听,慢慢变成一种无奈.<br>
+cent777		        Reply    55<br>
+cent777   2019-02-18 10:47:55 +08:00<br>
+前年回家发现我妈被一个直销无限极的忽悠了，已经买了一千多的保健品<br>
+过年期间天天跟她谈心，但效果一般般<br>
+后来天天找保健品的负面文章转发给她<br>
+再后来找这个牌子的负面新闻，自己做成公众号文章给她转发<br>
+去年就好了<br>
+Yiki		        Reply    56<br>
+Yiki   2019-02-18 10:48:16 +08:00<br>
+@MarioLuisGarcia 不行的我年纪还太小了<br>
+xfan00		        Reply    57<br>
+xfan00   2019-02-18 10:53:11 +08:00<br>
+突然想到我爸炒股赔了好多钱家庭陷入经济危机的事情了..<br>
+首先，接受事实。 每个人都有局限性，会不断犯错，爸妈和我们都一样。<br>
+然后，不要正面挑战父母的权威，让爸妈心理上舒适。多夸他们，也多报一下自己的好消息。让他们潜移默化地承认子女，而非子女强硬&quot;夺权&quot;。<br>
+最后，区别对待不同的事儿。小事开开玩笑乐呵一下，大事主要靠情感去提供意见，比如说 爸 我看到有新闻吃这种保健品吃出问题的 我真的害怕你生病啊 咱还是安稳的锻炼身体吧..<br>
+airmour		        Reply    58<br>
+airmour   2019-02-18 10:59:42 +08:00<br>
+昨天在抽屉上看到一个类似的，大意是他引导长辈用拼多多搜同样的产品然后就解决了<br>
+MarioLuisGarcia		        Reply    59<br>
+MarioLuisGarcia   2019-02-18 10:59:51 +08:00<br>
+@Yiki 嗯，理解的。。我当年也是这样，然后就眼睁睁看着我父母亏了几十万。。<br>
+YQ94		        Reply    60<br>
+YQ94   2019-02-18 11:03:44 +08:00<br>
+@cent777 我爸也买过，当时本来就是得了强直，吃了这个直接不能动了，后来到大医院治了很久吃了一年多中药才恢复行动能力。这些保健品真的是害人不浅，都是熟人传播，罪大恶极。<br>
+openbsd		        Reply    61<br>
+openbsd   2019-02-18 11:03:58 +08:00<br>
+有没想过是因为年纪大了，观点转变所致 ？ 我一直以为，会使用互联网的长辈(每天上网时间比我们还多)，常识性的东西，去某度 / “百科” 稍作了解，即可解惑避免被骗。 但是在内地乡镇，他们只要被忽悠就会信得神乎其神，然后年轻时小气得要死的人，也能舍得大把掏<br>
+dxgfalcongbit		        Reply    62<br>
+dxgfalcongbit   2019-02-18 11:06:22 +08:00 via Android<br>
+换纯净水就行了<br>
+xiongyicheng		        Reply    63<br>
+xiongyicheng   2019-02-18 11:11:28 +08:00<br>
+无奈啊，很相信网上那些假新闻，每次回去都更我说，要怎么样怎么样<br>
+c466934322		        Reply    64<br>
+c466934322   2019-02-18 11:14:48 +08:00<br>
+评论的原因是：你的头像和我的微信头像一致<br>
+dxgfalcongbit		        Reply    65<br>
+dxgfalcongbit   2019-02-18 11:17:16 +08:00 via Android   ❤️ 1<br>
+父母变傻至少平时不一起生活的话眼不见心不烦。最不爽的是老婆狂交智商税，她前几天买了个浪琴的表，说过几天还要买Ω的，包装太大所以没带包装回来，我说包装做这么大很明显就是为了迎合你们这种购买群体的心理需求，而且没看出你平时对机械感兴趣啊！然后我在网上搜比尔盖茨贝索斯马云雷军的照片给她看，我说你看大佬们都不戴表了，若干年前我也戴，因为那时候考试什么的确实需要用手表看时间，但现在没这个需求瞎买这些破表干啥？还有她平时喜欢往脸上抹各种东西，一边抹一般拍自己脸，我真 tm 无语了，初中生物都白学了，完全停留在旧时代吃猪毛治脱发的知识水平…<br>
+scg16		        Reply    66<br>
+scg16   2019-02-18 11:19:17 +08:00 via iPhone   ❤️ 1<br>
+啃老可解，先下手为强。<br>
+jfdnet		        Reply    67<br>
+jfdnet   2019-02-18 11:19:39 +08:00<br>
+有个俗语怎么说来着 别人想要香蕉 你非要给苹果 得不偿失啊！<br>
+只要不是原则性的问题<br>
+你不应该抱着管理的心态<br>
+LxExExl		        Reply    68<br>
+LxExExl   2019-02-18 12:00:33 +08:00<br>
+@ryd994 这个也科普过了 我给他们看了 12306 的 16M 用户信息和开房数据库 告诉他们身份证号码和姓名不外泄<br>
+vanishcode		        Reply    69<br>
+vanishcode   2019-02-18 12:08:01 +08:00 via Android<br>
+我之前想过，家长不是比较容易相信公众号自媒体什么的吗，可以找几个人运营一个类似于果壳辟谣内容的公众号。。。。<br>
+kimown		        Reply    70<br>
+kimown   2019-02-18 12:14:30 +08:00 via Android<br>
+我教了爸妈 3 4 年，他们总算能自己意识手机 电脑的重要了<br>
+FrostQAQ		        Reply    71<br>
+FrostQAQ   2019-02-18 13:22:22 +08:00<br>
+@autoxbc 笑死了<br>
+index90		        Reply    72<br>
+index90   2019-02-18 13:27:10 +08:00<br>
+我爷爷奶奶天天去照“红光机”，说治百病。天天去上课，还买回来一些“保健品”。<br>
+刚开始，觉得两老被人骗钱，想去劝。<br>
+后来放弃了，子女都不在身边，两个老人家就只有去上课这一个爱好了。有其他老人聊天，有销售陪他说话。<br>
+如果要劝老人家不要去，那就要做好陪伴他们的准备，很明显，做不到，或者不想做。</p>
+<p>骗一下钱也无所谓，就当做是花钱请人陪一下老人家，搞一下老人家喜欢的活动就好了。<br>
+就一条底线，不要害人性命，不要害人卖楼卖房。<br>
+如果真有商家突破底线了，找第三方来曝光和规劝，例如媒体和警察。<br>
+最亲近的人说的话，一般都听不进去。<br>
+ittianyu		        Reply    73<br>
+ittianyu   2019-02-18 13:31:58 +08:00<br>
+父母被骗几万十几万的那也是他们自己的钱，不致命。我爸半年欠了几十万，现在我不得不还，别问我周六周日为什么去公司上班，因为管饭 = =。。<br>
+ryan18		        Reply    74<br>
+ryan18   2019-02-18 13:32:27 +08:00 via Android<br>
+那些专坑老年人的混球，不知 ta 们自己的父母被坑了表情会是怎样<br>
+ResidualWind		        Reply    75<br>
+ResidualWind   2019-02-18 14:12:13 +08:00<br>
+只能花时间花精力去开导父母，多和他们交流，保持联系，多关心关系他们。<br>
+im67		        Reply    76<br>
+im67   2019-02-18 14:37:11 +08:00<br>
+同样对父母沉迷头条新闻有着深深的担忧......<br>
+crc8		        Reply    77<br>
+crc8   2019-02-18 14:45:29 +08:00<br>
+主要还是因为有钱<br>
+surfin9		        Reply    78<br>
+surfin9   2019-02-18 14:45:38 +08:00<br>
+赚多点钱，让他们去傻。<br>
+就好像多少人也希望自己是富二代一样，父亲有花不完的钱给你去败。</p>
+<p>养儿当如王健林，孝顺亦是。<br>
+zhangxs1989		        Reply    79<br>
+zhangxs1989   2019-02-18 14:52:30 +08:00   ❤️ 1<br>
+和陪伴一点关系没有，天天在一起的照样会被骗。主要原因是子女们太懂事，弄得老人们无事可做，如果哦你要是天天折腾他们，他们真的没时间去上别人的当。所以想父母不被骗就要先骗父母<br>
+lopetver		        Reply    80<br>
+lopetver   2019-02-18 16:02:48 +08:00<br>
+问题原因其实还是挺多的，建议的话，记得得到 app 里面有期讲的就是如果和父母沟通远离谣言，刚搜了下，是卓克讲的，可以搜下“父母”第一条就是。<br>
+另外，换个角度想下，再过个几十年当你老了，可能是你的孩子也会发帖求助类似的问题，有时候多换个角度去看问题会有不一样的理解、<br>
+inrenping		        Reply    81<br>
+inrenping   2019-02-18 16:08:43 +08:00<br>
+多向家里要钱，把父母的钱拿完了他们就没钱去被骗了</p>
+<p>[手动狗头]</p>
+<p>随着年龄的增长，人脑的判断力就会断崖式地下跌，和受教育程度无关，以后我们也是这样。<br>
+leesymbol		        Reply    82<br>
+leesymbol   2019-02-18 17:02:17 +08:00<br>
+老妈在家带孩子 有几个月了吧 昨天晚上我喝啤酒找起子 我妈拿起剪指刀问这个是吗? 我一脸黑线..<br>
+v1		        Reply    83<br>
+v1   2019-02-18 17:11:37 +08:00<br>
+春节我妈在快手上学做的菜特难吃<br>
+leaf00		        Reply    84<br>
+leaf00   2019-02-18 17:17:03 +08:00<br>
+请多陪伴他们！<br>
+hiyouli		        Reply    85<br>
+hiyouli   2019-02-18 18:03:19 +08:00<br>
+突然想起来我老爸有一件事，我也跟楼主一样想跟老爹沟通，但是没楼主掌握的资料详实，连国标都上了，哈哈哈。<br>
+事情是这样的，老爹喜欢喝茶，我也跟喜欢喝，年假回家用暖壶倒水泡茶好麻烦，家里的茶盘他又不用，于是我拿出烧水壶（电的那种）接水烧开，泡茶，因为烧水壶较小（ 1L 多），所以可以放在桌子上，比较方便。<br>
+但是老爹一直嘟嘟囔囔说什么烧水壶烧开的水，是电解水，没有火（燃气灶）烧的水好喝，也没营养，反正是乱七八糟的我没听进去，已经说了很多次了。甚至说的我都快要相信确实口感味道不一样了。</p>
+<p>暂时还没查询相关资料：到底电热烧水壶和燃气灶烧开的水，是否有本质的区别呢？<br>
+Laynooor		        Reply    86<br>
+Laynooor   2019-02-18 18:12:12 +08:00 via Android<br>
+@hiyouli 这个和耳机玄学差不多吧？据说水电听起来比较清澈，火电带点......<br>
+Aether		        Reply    87<br>
+Aether   2019-02-18 18:32:53 +08:00<br>
+楼主能够认识到自己的愚昧，这很好啊。接下来看看怎么改善吧。<br>
+Abbot		        Reply    88<br>
+Abbot   2019-02-18 18:59:21 +08:00<br>
+过年回家把我妈关注的一堆公众号清理了一波<br>
+imherer		        Reply    89<br>
+imherer   2019-02-18 19:37:12 +08:00<br>
+没别的意思，忽然想起之前看过的一篇文章</p>
+<p>问：文化水平低的人和高学历的人同时做违法犯罪的事谁更可怕？</p>
+<p>答案是：文化水平低的人，因为他们可能意识不到他们在犯罪<br>
+stream		        Reply    90<br>
+stream   2019-02-18 21:15:52 +08:00<br>
+年轻就没学到好的知识（国情）。老年大学很有必要。<br>
+wendzhue		        Reply    91<br>
+wendzhue   2019-02-18 23:01:28 +08:00<br>
+根源其实是怕死啊.</p>
+<p>这个没有办法的.<br>
+linuxsteam		        Reply    92<br>
+linuxsteam   2019-02-21 23:27:27 +08:00 via Android<br>
+@imherer 白瞎原来高学历犯罪的电视剧那么火了，白看了。</p>
+
+            </div>
+            
+            
+              <div class="post-footer">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong class="language" data-lan="author">本文作者：</strong>
+      xieincz
+    </li>
+    <li class="post-copyright-link">
+      <strong class="language" data-lan="link">本文链接：</strong>
+      <a href="https://xieincz.github.io/post/mian-dui-fu-mu-nian-lao-ban-sui-de-bu-ke-bi-mian-de-fei-bian-yi-ni-zen-me-ban/" title="面对父母年老，伴随的不可避免的（非贬义），你怎么办？">https://xieincz.github.io/post/mian-dui-fu-mu-nian-lao-ban-sui-de-bu-ke-bi-mian-de-fei-bian-yi-ni-zen-me-ban/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong class="language" data-lan="copyright">版权声明： </strong>
+      本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+  <div class="tags">
+    
+  </div>
+  <div class="nav">
+    <div class="nav-prev">
       
-      
-      
-      
-      
-      
-      
-      
-      
-      <a href="https://xieincz.github.io/post/hello-word/">
-        <div class="motion-warpper">
-          <div class="tag-post-node">
-            <h1>
-              07-23
-              <small>Hello word!</small>
-            </h1>
-          </div>
-        </div>
-      </a>
-      
-      
-      
-      
-      
-      
-      
-      
+    </div>
+    <div class="nav-next">
       
     </div>
   </div>
 </div>
-          </section>
+            
+            
+  
+    
+      <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'ab180432a03e503536f9',
+    clientSecret: '294bf26ddc6705a8d97dc7c676f0a63e27900302',
+    repo: 'xieincz.github.io',
+    owner: 'xieincz',
+    admin: ['xieincz'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+  gitalk.render('gitalk-container')
+</script>
+    
+    
+  
+
+          </div>
         </div>
       </div>
     </div>
@@ -484,6 +987,253 @@
   }
 
 </script>
+    <div class="light-box" id="light_box"></div>
+<script>
+  let imgs = document.querySelectorAll('.post-body img');
+  let lightBox = document.querySelector('#light_box');
+  lightBox.addEventListener('mousedown', (e) => {
+    e.preventDefault()
+  })
+  lightBox.addEventListener('mousewheel', (e) => {
+    e.preventDefault()
+  })
+  let width = window.innerWidth * 0.8;
+  lightBox.onclick = () => {
+    let img = lightBox.querySelector('img');
+    lightBox.style = '';
+    img && img.remove();
+  }
+  imgs.forEach(item => {
+    item.onclick = function (e) {
+      let lightImg = document.createElement('img');
+      lightImg.src = this.src;
+      lightBox.style = `height: 100%; opacity: 1; background-color: rgba(0, 0, 0, 0.5);cursor: zoom-out;`;
+      lightImg.style = `width: ${width}px;border-radius: 2px;`;
+      lightImg.onclick = function () {
+        lightBox.style = '';
+        this.remove();
+      }
+      lightBox.append(lightImg);
+    }
+  })
+</script>
+    <div class="reward-mask" style="display: none;">
+  <div class="reward-relative">
+    <span class="close" aria-hidden="true">x</span>
+    <div class="reward-body">
+      <h2>感谢您的支持，我会继续努力的!</h2>
+      <div class="reward-img-box">
+        <div style="position: relative; width: 140px; height: 140px;">
+          
+          
+          
+        </div>
+      </div>
+      <p class="reward-word">扫码打赏，你说多少就多少</p>
+      <p class="reward-tip">打开微信扫一扫，即可进行扫码打赏哦</p>
+    </div>
+    <div class="bottom">
+      
+      
+    </div>
+  </div>
+</div>
+<style>
+  .reward-mask {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #00000054;
+  }
+
+  .reward-relative {
+    position: relative;
+    width: 480px;
+    text-align: center;
+    margin: 0 auto;
+    border-radius: 5px;
+    background-color: #fff;
+    top: 50%;
+    margin-top: -205px;
+  }
+
+  .reward-relative .close {
+    position: absolute;
+    right: 10px;
+    font-weight: normal;
+    font-size: 16px;
+    color: #929292;
+  }
+
+  .reward-body {
+    padding: 40px 20px 20px;
+  }
+
+  .bottom {
+    display: flex;
+  }
+
+  .reward-btn {
+    text-align: center;
+  }
+
+  .reward-btn-text {
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    background-color: #ff9734;
+    color: #FFF;
+    margin-top: 20px;
+  }
+
+  .pay-text {
+    margin-top: 10px;
+    padding: 10px;
+    flex: 1;
+    transition: all .2s linear;
+  }
+
+  .pay-text:hover {
+    background-color: #a5a5a536;
+  }
+
+  .reward-body h2 {
+    padding-top: 10px;
+    text-align: center;
+    color: #a3a3a3;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 0 20px;
+  }
+
+  .reward-body h2:after,
+  .reward-body h2:before {
+    font-family: Arial, Helvetica, sans-serif;
+    background: 0 0;
+    width: 0;
+    height: 0;
+    font-style: normal;
+    color: #eee;
+    font-size: 80px;
+    position: absolute;
+    top: 20px;
+  }
+
+  .reward-body h2:before {
+    content: '\201c';
+    left: 50px;
+  }
+
+  .reward-body h2:after {
+    content: '\201d';
+    right: 80px;
+  }
+
+  .reward-img-box {
+    display: inline-block;
+    padding: 10px;
+    border: 6px solid #ea5f00;
+    margin: 0 auto;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .reward-img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 767px) {
+    .reward-relative {
+      height: 100%;
+      top: 0px;
+      margin-top: 0;
+      width: auto;
+    }
+
+    .reward-relative .bottom {
+      flex-direction: column;
+    }
+
+    .reward-relative .pay-text {
+      width: 80%;
+      margin: 5px auto;
+      border: 1px solid silver;
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .reward-body h2:after {
+      right: 40px;
+    }
+
+    .reward-body h2:after,
+    .reward-body h2:before {
+      font-size: 60px;
+    }
+
+    .reward-body h2:before {
+      left: 20px;
+    }
+  }
+</style>
+<script>
+  !function () {
+    var mask = document.querySelector('.reward-mask');
+    let close = document.querySelector('.reward-relative .close');
+    let rewardBtn = document.querySelector('.reward-btn');
+
+    let zfb = document.querySelector('#zfb'),
+      wx = document.querySelector('#wx'),
+      zfbBtn = document.querySelector('#zfbBtn'),
+      wxBtn = document.querySelector('#wxBtn');
+
+    if (zfbBtn && wxBtn) {
+      zfbBtn.addEventListener('click', () => {
+        window.Velocity(zfb, 'transition.slideLeftIn', {
+          duration: 400
+        });
+        window.Velocity(wx, 'transition.slideRightOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+
+      wxBtn.addEventListener('click', () => {
+        window.Velocity(wx, 'transition.slideRightIn', {
+          duration: 400
+        });
+        window.Velocity(zfb, 'transition.slideLeftOut', {
+          display: 'none',
+          duration: 400
+        });
+      });
+    }
+
+    rewardBtn.addEventListener('click', (e) => {
+      window.Velocity(mask, 'transition.slideDownIn', {
+        duration: 400
+      })
+    });
+
+    close.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.Velocity(mask, 'transition.slideUpOut', {
+        duration: 400
+      })
+    })
+  }()
+</script>
+
   </div>
 </body>
 
@@ -1221,7 +1971,6 @@ This is the first post of the blog.😁&lt;/p&gt;
 
 
 <script src="/media/js/cool.js"></script>
-
 
 
 
