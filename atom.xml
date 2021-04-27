@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xieincz.github.io</id>
     <title>xieincz的博客</title>
-    <updated>2021-04-27T13:21:00.303Z</updated>
+    <updated>2021-04-27T13:26:13.809Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xieincz.github.io"/>
     <link rel="self" href="https://xieincz.github.io/atom.xml"/>
@@ -20,23 +20,12 @@
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[多年以前，有个流传很广的故事说……]]></title>
-        <id>https://xieincz.github.io/post/jrhyqbf7g9qv/</id>
-        <link href="https://xieincz.github.io/post/jrhyqbf7g9qv/">
-        </link>
-        <updated>2020-08-05T02:47:05.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://xieincz.github.io/post-images/1596595728948.png" alt="" loading="lazy"><br>
-多年以前，有个流传很广的故事说，海里某座岛上有大金矿。很多梦想发财的人听到故事后纷纷赶去挖金子，然而最终赚到钱的，却是摆渡人们上岛的船夫。因为……那个故事就是船夫们编的。</p>
-]]></content>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Hello word!]]></title>
         <id>https://xieincz.github.io/post/hello-word/</id>
         <link href="https://xieincz.github.io/post/hello-word/">
         </link>
         <updated>2020-07-23T00:03:34.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://xieincz.github.io/post-images/1595462755989.jpg" alt="" loading="lazy"><br>
-This is the first post of the blog.😁</p>
+        <content type="html"><![CDATA[<p>This is the first post of the blog.😁</p>
 ]]></content>
     </entry>
 </feed>
