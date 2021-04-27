@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xieincz.github.io</id>
     <title>xieincz的博客</title>
-    <updated>2021-04-27T13:32:08.211Z</updated>
+    <updated>2021-04-27T13:33:34.868Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xieincz.github.io"/>
     <link rel="self" href="https://xieincz.github.io/atom.xml"/>
@@ -10,6 +10,15 @@
     <logo>https://xieincz.github.io/images/avatar.png</logo>
     <icon>https://xieincz.github.io/favicon.ico</icon>
     <rights>All rights reserved 2021, xieincz的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[test]]></title>
+        <id>https://xieincz.github.io/post/test/</id>
+        <link href="https://xieincz.github.io/post/test/">
+        </link>
+        <updated>2021-04-27T13:33:23.000Z</updated>
+        <content type="html"><![CDATA[<p>test</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[预告：五一可能会开发一个新项目]]></title>
         <id>https://xieincz.github.io/post/yu-gao-wu-yi-ke-neng-hui-kai-fa-yi-ge-xin-xiang-mu/</id>
