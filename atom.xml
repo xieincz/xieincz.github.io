@@ -2,14 +2,14 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://xieincz.github.io</id>
     <title>xieincz的博客</title>
-    <updated>2020-12-16T15:19:55.369Z</updated>
+    <updated>2021-04-27T13:17:08.608Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://xieincz.github.io"/>
     <link rel="self" href="https://xieincz.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://xieincz.github.io/images/avatar.png</logo>
     <icon>https://xieincz.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, xieincz的博客</rights>
+    <rights>All rights reserved 2021, xieincz的博客</rights>
     <entry>
         <title type="html"><![CDATA[多年以前，有个流传很广的故事说……]]></title>
         <id>https://xieincz.github.io/post/jrhyqbf7g9qv/</id>
