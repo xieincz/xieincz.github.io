@@ -1,0 +1,1479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://xieincz.github.io</id>
+    <title>xieincz的博客</title>
+    <updated>2024-03-31T13:32:13.490Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://xieincz.github.io"/>
+    <link rel="self" href="https://xieincz.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://xieincz.github.io/images/avatar.png</logo>
+    <icon>https://xieincz.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, xieincz的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[给Github Desktop设置代理]]></title>
+        <id>https://xieincz.github.io/post/gei-github-desktop-she-zhi-dai-li/</id>
+        <link href="https://xieincz.github.io/post/gei-github-desktop-she-zhi-dai-li/">
+        </link>
+        <updated>2023-11-12T07:46:43.000Z</updated>
+        <content type="html"><![CDATA[<p>因为 Github Desktop 的设置中并没有设置代理的选项，如果我们又不想打开全局代理，就会进入一个很棘手的情况。因为有时候 GitHub 会偶尔连不上，导致 Github Desktop 以为登录信息过期了，但是按照流程再重新登录一次 GitHub 账号仍然会卡在这个阶段。</p>
+<p>不过幸好 Github Desktop 是基于 Electron 开发的。Electron 的应用有个特性，就是启动的时候可以通过 <code>--proxy-server=&quot;http://127.0.0.1:1080&quot;</code> 这样的参数设置代理服务器。</p>
+<p>因此，我们只需要右键点击 Github Desktop 的快捷方式，点击“属性”。然后在打开的窗口里切换到“快捷方式”这一栏。然后在“目标”这个输入框的内容的最后加上 <code> --proxy-server=&quot;http://127.0.0.1:1080&quot;</code> （这个代理地址需要根据你自己的情况进行修改，注意要在 <code>--proxy-server</code> 的前面加一个空格）。然后点“确定”来保存更改。用这个快捷方式来打开 Github Desktop 就能让 Github Desktop 通过这个代理来访问互联网了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[huggingface-go : 加速下载huggingface的模型和数据集]]></title>
+        <id>https://xieincz.github.io/post/huggingface-go-jia-su-xia-zai-huggingface-de-mo-xing-he-shu-ju-ji/</id>
+        <link href="https://xieincz.github.io/post/huggingface-go-jia-su-xia-zai-huggingface-de-mo-xing-he-shu-ju-ji/">
+        </link>
+        <updated>2023-10-21T04:44:37.000Z</updated>
+        <content type="html"><![CDATA[<p>无需消耗机场的流量。0成本高速下载huggingface上动辄数十GB的数据集和模型。</p>
+<h2 id="使用方法">使用方法</h2>
+<pre><code class="language-bash">wget https://mirror.ghproxy.com/https://github.com/xieincz/huggingface-go/releases/latest/download/huggingface_go_linux_amd64
+mv huggingface_go_linux_amd64 huggingface_go
+chmod +x huggingface_go
+
+#使用方法： huggingface_go -u huggingface的模型/数据集链接 -f (可选)要保存的位置，可以是文件夹名字也可以是路径 -p (可选)代理链接(如果填写，必须以 / 结尾)
+#例如：想要下载 https://huggingface.co/NousResearch/Llama-2-13b-hf 这个模型
+#使用方法一：通过镜像站 https://hf-mirror.com 下载
+./huggingface_go -u https://hf-mirror.com/NousResearch/Llama-2-13b-hf/tree/main -f /path/to/your/folder
+
+#使用方法二：通过代理链接从huggingface下载
+./huggingface_go -u https://huggingface.co/NousResearch/Llama-2-13b-hf/tree/main -f /path/to/your/folder -p https://worker-share-proxy-3y2sz7.xieincz.eu.org/
+</code></pre>
+<p>更多操作系统/CPU架构的版本可以到我的GitHub仓库下载：<a href="https://github.com/xieincz/huggingface-go">https://github.com/xieincz/huggingface-go</a><br>
+如果对你有帮助的话，不妨点个star😊</p>
+<h2 id="创建自己的代理链接">创建自己的代理链接</h2>
+<p>博主提供的代理链接用的是cloudflare的免费版套餐，每日只有10万次请求的额度，如果有很多人用就很容易超过这个额度。所以创建一个自己的代理链接就很有必要了。根据我自己的使用经验，下载一个数据集大约要消耗80次请求。<br>
+要开始下面的步骤，你需要有：</p>
+<ol>
+<li>
+<p>一个cloudflare账号（打开 <a href="https://dash.cloudflare.com/sign-up">https://dash.cloudflare.com/sign-up</a> 来免费注册一个）</p>
+</li>
+<li>
+<p>一个绑定到cloudflare账号的域名（ <a href="https://nic.eu.org/">https://nic.eu.org/</a> 可以注册免费的域名，然后将其添加到cloudflare账号中即可）</p>
+</li>
+</ol>
+<h3 id="创建worker">创建worker</h3>
+<ol>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/workers/new">https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/workers/new</a></p>
+</li>
+<li>
+<p>名称可以自己填个喜欢的。比如 <code>worker-share-proxy-3y2sz7</code> ，然后点击右下角的“部署”。</p>
+</li>
+<li>
+<p>然后打开刚才创建的worker修改代码。<br>
+可以点这个链接直达修改页面（如果你第二步的名称和我的不同，记得修改） <a href="https://dash.cloudflare.com/?to=/:account/workers/services/edit/worker-share-proxy-3y2sz7/production">https://dash.cloudflare.com/?to=/:account/workers/services/edit/worker-share-proxy-3y2sz7/production</a></p>
+</li>
+<li>
+<p>将原有的代码全部删除，然后将下面这段代码复制粘贴到第三步打开的网页中。然后点击右上角的“保存并部署”。</p>
+</li>
+</ol>
+<pre><code class="language-js">'use strict'
+const ASSET_URL = 'https://hunshcn.github.io/gh-proxy/'
+const PREFIX = '/'
+const Config = {
+    jsdelivr: 0
+}
+const whiteList = [] // 白名单，路径里面有包含字符的才会通过，e.g. ['/username/']
+const PREFLIGHT_INIT = {
+    status: 204,
+    headers: new Headers({
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET,POST,PUT,PATCH,TRACE,DELETE,HEAD,OPTIONS',
+        'access-control-max-age': '1728000',
+    }),
+}
+const exp1 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i
+const exp2 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i
+const exp3 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i
+const exp4 = /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i
+const exp5 = /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i
+const exp6 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i
+function makeRes(body, status = 200, headers = {}) {
+    headers['access-control-allow-origin'] = '*'
+    return new Response(body, {status, headers})
+}
+function newUrl(urlStr) {
+    try {
+        return new URL(urlStr)
+    } catch (err) {
+        return null
+    }
+}
+addEventListener('fetch', e =&gt; {
+    const ret = fetchHandler(e)
+        .catch(err =&gt; makeRes('cfworker error:\n' + err.stack, 502))
+    e.respondWith(ret)
+})
+function checkUrl(u) {
+    for (let i of [exp1, exp2, exp3, exp4, exp5, exp6]) {
+        if (u.search(i) === 0) {
+            return true
+        }
+    }
+    return false
+}
+const customProxyDomainArray=[
+    /^(?:https?:\/\/).*$/i
+]
+function checkCustomUrl(u) {
+    for (let i of customProxyDomainArray ) {
+        if (u.search(i) === 0) {
+            return true
+        }
+    }
+    return false
+}
+async function fetchHandler(e) {
+    const req = e.request
+    const urlStr = req.url
+    const urlObj = new URL(urlStr)
+    let path = urlObj.searchParams.get('q')
+    if (path) {
+        return Response.redirect('https://' + urlObj.host + PREFIX + path, 301)
+    }
+    path = urlObj.href.substr(urlObj.origin.length + PREFIX.length).replace(/^https?:\/+/, 'https://')
+    if (path.search(exp1) === 0 || path.search(exp5) === 0 || path.search(exp6) === 0 || path.search(exp3) === 0 || path.search(exp4) === 0) {
+        return httpHandler(req, path)
+    } else if (path.search(exp2) === 0) {
+        if (Config.jsdelivr) {
+            const newUrl = path.replace('/blob/', '@').replace(/^(?:https?:\/\/)?github\.com/, 'https://cdn.jsdelivr.net/gh')
+            return Response.redirect(newUrl, 302)
+        } else {
+            path = path.replace('/blob/', '/raw/')
+            return httpHandler(req, path)
+        }
+    } else if (path.search(exp4) === 0) {
+        const newUrl = path.replace(/(?&lt;=com\/.+?\/.+?)\/(.+?\/)/, '@$1').replace(/^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com/, 'https://cdn.jsdelivr.net/gh')
+        return Response.redirect(newUrl, 302)
+    } else if (checkCustomUrl(path)) {
+        return httpHandler(req, path)
+    } else {
+        return fetch(ASSET_URL + path)
+    }
+}
+function httpHandler(req, pathname) {
+    const reqHdrRaw = req.headers
+    if (req.method === 'OPTIONS' &amp;&amp;
+        reqHdrRaw.has('access-control-request-headers')
+    ) {
+        return new Response(null, PREFLIGHT_INIT)
+    }
+    const reqHdrNew = new Headers(reqHdrRaw)
+    let urlStr = pathname
+    let flag = !Boolean(whiteList.length)
+    for (let i of whiteList) {
+        if (urlStr.includes(i)) {
+            flag = true
+            break
+        }
+    }
+    if (!flag) {
+        return new Response(&quot;blocked&quot;, {status: 403})
+    }
+    if (urlStr.startsWith('github')) {
+        urlStr = 'https://' + urlStr
+    }
+    const urlObj = newUrl(urlStr)
+    const reqInit = {
+        method: req.method,
+        headers: reqHdrNew,
+        redirect: 'manual',
+        body: req.body
+    }
+    return proxy(urlObj, reqInit)
+}
+async function proxy(urlObj, reqInit) {
+    const res = await fetch(urlObj.href, reqInit)
+    const resHdrOld = res.headers
+    const resHdrNew = new Headers(resHdrOld)
+    const status = res.status
+    if (resHdrNew.has('location')) {
+        let _location = resHdrNew.get('location')
+        if (checkUrl(_location))
+            resHdrNew.set('location', PREFIX + _location)
+        else {
+            reqInit.redirect = 'follow'
+            return proxy(newUrl(_location), reqInit)
+        }
+    }
+    resHdrNew.set('access-control-expose-headers', '*')
+    resHdrNew.set('access-control-allow-origin', '*')
+    resHdrNew.delete('content-security-policy')
+    resHdrNew.delete('content-security-policy-report-only')
+    resHdrNew.delete('clear-site-data')
+    return new Response(res.body, {
+        status,
+        headers: resHdrNew,
+    })
+}
+</code></pre>
+<ol start="5">
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/worker-share-proxy-3y2sz7/production/settings/triggers">https://dash.cloudflare.com/?to=/:account/workers/services/view/worker-share-proxy-3y2sz7/production/settings/triggers</a><br>
+（注意更改链接中的 <code>worker-share-proxy-3y2sz7</code> ），点击“添加自定义域”，输入 <code>worker-share-proxy-3y2sz7.xieincz.eu.org</code> （这个 <code>xieincz.eu.org</code> 要换成你绑定到cloudflare的域名），然后保存。</p>
+</li>
+<li>
+<p>稍等几分钟，打开第五步输入的网址。如果看到一个输入框和一个按钮，恭喜你，已经成功完成了这个教程。<br>
+你可以将此时浏览器的地址栏中的网址（形如 <code>https://worker-share-proxy-3y2sz7.xieincz.eu.org/</code> ）用作huggingface-go的代理链接。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[利用 Remotely Save 通过 Cloudflare R2 (S3 API) 在多个设备同步 Obsidian]]></title>
+        <id>https://xieincz.github.io/post/li-yong-remotely-save-tong-guo-cloudflare-r2-s3-api-zai-duo-ge-she-bei-tong-bu-obsidian/</id>
+        <link href="https://xieincz.github.io/post/li-yong-remotely-save-tong-guo-cloudflare-r2-s3-api-zai-duo-ge-she-bei-tong-bu-obsidian/">
+        </link>
+        <updated>2023-10-06T13:43:53.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>Obsidian 提供了付费的同步服务，不过要 $8 每月。我们可以利用 Remotely Save 通过 Cloudflare R2 (S3 API) 在多个设备同步 Obsidian，而且不用花一分钱。</p>
+<p>Cloudflare R2 是一个类似于 AWS S3 这样的服务。不过 R2 提供了相当可观的免费额度，而且也较为容易获得（只需要一张普通的借记卡，然后注册 PayPal 中国账号，然后在 Cloudflare 添加 PayPal 作为付款方式即可）。下面是 <a href="https://developers.cloudflare.com/r2/pricing/#r2-pricing">Cloudflare R2 的定价表</a>。</p>
+<h3 id="r2-pricing">R2 pricing</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Free</th>
+<th>Paid - Rates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage</td>
+<td>10 GB / month</td>
+<td>$0.015 / GB-month</td>
+</tr>
+<tr>
+<td>Class A Operations</td>
+<td>1 million requests / month</td>
+<td>$4.50 / million requests</td>
+</tr>
+<tr>
+<td>Class B Operations</td>
+<td>10 million requests / month</td>
+<td>$0.36 / million requests</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：“Class A Operations” 可以近似理解为 “写入“，“Class B Operations” 可以近似理解为 “读取“。可以看到，流量是不计费的。而且每月存储 10GB 以内，写入次数在一百万次以内，读取次数在一千万次以内是不会产生费用的。</p>
+</blockquote>
+<h2 id="创建-r2-存储桶">创建 R2 存储桶</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/new">https://dash.cloudflare.com/?to=/:account/r2/new</a> .</p>
+</li>
+<li>
+<p>为这个桶设置一个名字（例如 <code>obsidian-paper</code> ，这个名字在后续会用到）然后点击 <strong>Create bucket</strong>.</p>
+</li>
+</ol>
+<h2 id="获取-endpoint">获取 Endpoint</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/default/buckets/obsidian-paper/settings">https://dash.cloudflare.com/?to=/:account/r2/default/buckets/obsidian-paper/settings</a><br>
+（注意：该链接中的  <code>obsidian-paper</code> 要替换成你自己的桶的名字）</p>
+</li>
+<li>
+<p>在 <strong>Bucket Details</strong> 这一栏中找到 <strong>S3 API</strong><br>
+（形如 <code>https://xxx.r2.cloudflarestorage.com/obsidian-paper</code> ）</p>
+</li>
+<li>
+<p>则 <code>https://xxx.r2.cloudflarestorage.com</code> 就是我们要的 Endpoint.</p>
+</li>
+</ol>
+<h2 id="获取-accesskeyid-和-secretaccesskey">获取 AccessKeyID 和 SecretAccessKey</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/api-tokens/create">https://dash.cloudflare.com/?to=/:account/r2/api-tokens/create</a> .</p>
+</li>
+<li>
+<p>在 <strong>Permissions</strong> 这栏中选择 <strong>Admin Read &amp; Write</strong>.</p>
+</li>
+<li>
+<p>点击下方的 <strong>Create API Token</strong>.</p>
+</li>
+<li>
+<p>在新加载的页面中就可以找到 <strong>AccessKeyID</strong> 和 <strong>SecretAccessKey</strong></p>
+</li>
+<li>
+<p>点击下方的 <strong>Finish</strong>.</p>
+</li>
+</ol>
+<h2 id="remotely-save-插件">Remotely Save 插件</h2>
+<h3 id="安装">安装</h3>
+<p>在 Obsidian 的插件市场中搜索 <strong>Remotely Save</strong> 然后下载并启用。</p>
+<h3 id="在电脑进行配置">在电脑进行配置</h3>
+<ol>
+<li>
+<p>打开 Remotely Save 插件的设置页面。</p>
+</li>
+<li>
+<p>Endpoint、Bucket的名字、AccessKeyID 和 SecretAccessKey 按照上文所述的方法获取。</p>
+</li>
+<li>
+<p>Region 填写为 <code>us-east-1</code> 即可。</p>
+</li>
+<li>
+<p>S3 URL style 设置为 <strong>Path-Style</strong>.</p>
+</li>
+<li>
+<p>（可选）根据需要设置密码，以及自动同步的间隔（就算每分钟进行一次同步也难以用完每月一百万次的写入操作）</p>
+</li>
+<li>
+<p>在 导入导出部分设置 这一栏中，点击 <strong>生成 QR 码</strong> ，然后点击 <strong>点击此按钮复制特殊 URL</strong>  得到形如 <code>obsidian://remotely-save?xxxxxxx</code> 的链接。</p>
+</li>
+</ol>
+<h3 id="在手机-平板进行配置">在手机、平板进行配置</h3>
+<ol>
+<li>
+<p>要创建一个名称相同的库（例如电脑中 Obsidian 的库的名字是repo1，那么在其他设备上也要用这个名字），并且安装这个 Remotely Save 插件。</p>
+</li>
+<li>
+<p>在手机、平板中打开上文得到的形如 <code>obsidian://remotely-save?xxxxxxx</code> 的链接即可，如果不行就手动将 <strong>在电脑进行配置</strong> 章节提到的信息在手机、平板的 Obsidian 中再填写一次。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2023计算机0科研的保研边缘人的挣扎之路（哈深、中大、华南理工、山大）]]></title>
+        <id>https://xieincz.github.io/post/2023-ji-suan-ji-0-ke-yan-de-bao-yan-bian-yuan-ren-de-zheng-zha-zhi-lu-ha-shen-zhong-da-hua-nan-li-gong-shan-da/</id>
+        <link href="https://xieincz.github.io/post/2023-ji-suan-ji-0-ke-yan-de-bao-yan-bian-yuan-ren-de-zheng-zha-zhi-lu-ha-shen-zhong-da-hua-nan-li-gong-shan-da/">
+        </link>
+        <updated>2023-10-02T07:55:02.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="个人情况">个人情况</h2>
+<p>本科院校：次九，计算机科学与技术专业</p>
+<p>英语水平：四级540+，六级450+</p>
+<p>竞赛奖项：几个水赛的奖，无国奖</p>
+<p>科研经历：无科研、无成果、无论文的三无人员</p>
+<p>最终去向：哈工深cs学硕</p>
+<h2 id="自我评估">自我评估</h2>
+<p>由于自己本科背景并不占优势，rk也不够高，不敢碰瓷清北这种学校，而且自己在缺乏科研经历的情况下，对于直博有点担心未来会不会落得竹篮打水一场空。因此最开始就给自己的目标定在了华五or中九的专硕和学硕。</p>
+<p>由于本人家在南方，因此投递的时候重点会在南方的学校，最终去向也倾向于南方的学校。所以北方以及中西部的院校都没有投。（建议后来的学弟学妹们如果确定自己一定不想去这个学校，就不要投。终结海王，从你我他做起。）</p>
+<h2 id="夏0营-夏令营"><s>夏0营</s> 夏令营</h2>
+<p>身边rk高的同学基本5月开始报名，就陆陆续续开始面试了，但是我当时的rk甚至连保研机会都不知道有没有🤣，而且很多学校就只让同一学校的一两个人入营，我的rk靠后，本专业和隔壁专业的rk高的优先级都比我高。所以夏令营只报了本校（因为她在报名页面注明了本校学生不会占用入营名额）。不过入营了才知道本校的这次夏令营其实是宣讲营。所以我的夏令营其实是夏0营。在同学们在报名各种夏令营的时候，我就认真地准备第6学期的期末考试，争取把rk再提一提。暑假在等待期末考试成绩的期间，我就一直在准备考研。后来通过了解隔壁专业的低rk同学的入营情况才发现情况和我预期的差不多。他们基本都只入了那些海王营，比如东南、天大之类的。</p>
+<h2 id="预推免">预推免</h2>
+<p>在八月初的时候，第6学期的期末考试成绩终于出完了。之前一直悬着的心终于放了下来，rk成功提升到了第4，只要今年的保研政策不要大改就能稳稳获得推免资格。然后我就花了一周的时间，将这两年的保研经验贴都刷了一遍，在收集信息的同时也顺便找出自己的定位。原来我真的很菜。科研竞赛绩点都没一个拿得出手的。唯一能说道说道的就是工程能力。可惜根据这些经验帖，目前老师们还是偏好科研多一些。然后我就又花了一周去准备好各种文书，准备在预推免海投，否则以我这个履历真的没什么机会。又花了一个星期复习面试可能会问的专业问题，9月就来临了。</p>
+<p>大家都说预推免的bar会降低，90%的人是预推免上岸的。虽然我也是这90%，但是也不要过于乐观，预推免的招生名额相比夏令营都会少很多（有些学校甚至在夏令营就把名额招满了），而且一些之前不确定有保研资格的人以及夏令营拿到保底offer打算在预推免冲一冲的人，这一阶段也会参与到竞争里，所以预推免阶段千万不要莫名自信，做好一定的心理准备，预推免全寄是完全有可能的。在这个阶段，如果你没有保底offer而且rk之类的也比较低，就最好遵循“应报尽报，不漏一校”这个原则。因为就算前面的同学每人只投两三所学校，但也足以覆盖相当多的学校了（要考虑到其他专业的top也会来卷计算机）。</p>
+<h3 id="哈工深">哈工深</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：录取</p>
+<p>哈工深是第一个给我发面试通知的（而且也是我在预推免阶段拿到的最好的了）。九月的前半段我几乎每天都在0offer0入营的焦虑之中，哈工深的这个面试通知算是将我从这段糟糕的状态中拉上来了吧。回到广东后，终于吃上了怀念了大半年的肠粉😊。在这里建议大家最好提前找几个朋友来几次模拟面试（尤其是压力面），不要像我一样到了面试的时候一紧张就什么都忘了。</p>
+<h3 id="中大">中大</h3>
+<p><strong>专业</strong>：电子信息（计算机技术）<br>
+<strong>最终结果</strong>：预推免成绩前10（由于夏令营鸽子太多，这个排名其实约等于offer了）</p>
+<p>在参加哈工深面试期间我也收到了中大cs的复试通知。中大其实夏令营就已经把所有学硕、专硕的名额都录完了（而且还有将近50人的wl）。所以预推免的时候是一个offer都没有的，相当于是wl的wl🤣。负责招生的老师也在群里不断强调了这点。不过随着🕊们的发力，终于在复试开始那天将夏令营的wl消耗完。需要注意的是，机试虽然明确说了不占成绩，但是面试的时候老师们都会看到的，这也许会在某种程度上影响到面试得分。我就是因为机试得分比较高，被老师夸了一顿😊。</p>
+<h3 id="华南理工">华南理工</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：入营，但是因为和山大时间冲突就放弃了</p>
+<h3 id="山大">山大</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：入营，但是因为机试开始前的那个中午，中大的预推免成绩就出来了，所以就放弃了</p>
+<h3 id="全寄德-没进入复试的学校"><s>全寄德</s> 没进入复试的学校</h3>
+<p>中科大x3、浙大x2、南大x3、同济cs、复旦cs、中大se、华东师范cs</p>
+<h2 id="写在最后">写在最后</h2>
+<p>929果然一如既往的鸽子满天飞，好多学校都鸽穿了。中大cs也是，夏令营里排名100+的都上岸学硕了，预推免也录到了最后一名😂。就连🥚的九推都开到第4批了，甚至在通知里说“报名系统一直开放，录满为止”。只要你敢等，真是什么奇迹都会发生🤣。</p>
+<p>我929当天是把中大和哈工深都填了，当时想法是哈工深不录我（因为当时有小道消息说哈工深超发offer了）就去中大（因为中大先录完夏令营，然后录预推免直博，最后才是预推免专硕。要等很久才会录到我）。最后也是非常之刺激，两所学校都在12点多就发了复试通知，但是到两点的时候都还没有发拟录取通知。我一直在想，如果中大先发了拟录取要不要接受。不过还好先等来了哈工深的，然后我就赶紧和中大的教务说明情况放弃中大的资格了。</p>
+<p>上岸之后，总感觉这一切都太快了。看到身边的大佬们个个手握清北华五的待录取，我也清楚地知道自己和他们之间的差距，不过能有这个结果，对我来说也是冲上梦校梦导了。</p>
+<h3 id="赌狗圣经-保研圣经"><s>赌狗圣经</s> 保研圣经</h3>
+<ol>
+<li>年年如此，底层逻辑没变的，运气是对勇敢者的馈赠。</li>
+<li>大部分人就是忍不住，害怕没学上，去一个不满意的学校后悔三年。</li>
+<li>保研资格就是你最大的筹码，大家都是三个志愿，畏畏缩缩只会失去机会，20岁不搏一下，等30岁吗？</li>
+<li>10月20多才关保研系统，20多天足够你联系大部分导师了，没有风险就没有收益。</li>
+<li>自己心里有个高度的呀，随便上个学校，对得起三年努力的自己吗？</li>
+<li>预推免形式差没关系，就像人起跳的时候，要先下蹲。</li>
+<li>现在offer越集中越是利好，无论别人再厉害都只能去一个学校，剩下的都是留给我的。别人越恐慌，我越兴奋，我知道机会是留给勇敢者的。</li>
+<li>9月29之后，重新洗牌。</li>
+<li>没有勇气的人都会出局，机会就在这里，就看你把不把握得住，上个中九还是华五，就是看你的心态。</li>
+</ol>
+<p>现在看来，保研圣经仍然适用。如果你夏令营和预推免真的一个offer都没有，不要自暴自弃，好好准备，929之后上岸清北华五都是可能的。</p>
+<p>最后祝愿所有保研er都能心想事成，在929上岸梦校！</p>
+<p>保研顶流绿裙群号：</p>
+<ul>
+<li>全国最大非商业用爱交流计算机保研交流群1：943826679</li>
+<li>全国最大非商业用爱交流计算机保研交流群2：620876705</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Linux system monitor —— 适合树莓派的系统信息监视器]]></title>
+        <id>https://xieincz.github.io/post/linux-system-monitor-gua-he-shu-mei-pai-de-xi-tong-xin-xi-jian-shi-qi/</id>
+        <link href="https://xieincz.github.io/post/linux-system-monitor-gua-he-shu-mei-pai-de-xi-tong-xin-xi-jian-shi-qi/">
+        </link>
+        <updated>2023-08-31T01:52:30.000Z</updated>
+        <content type="html"><![CDATA[<p>由于我在树莓派4B上跑了各种服务，仅有的1GB内存已经所剩无几。为了能监控树莓派的各项信息，同时又要考虑到SD卡的寿命（我的树莓派的系统盘是一张已经十几岁“高龄”的SD卡）。所以只能自己实现一个资源占用低，写入少的系统信息监视器。</p>
+<h2 id="用到的接口">用到的接口</h2>
+<p>由于Linux万物皆文件。所以传感器信息等都能从某个文件中读取。</p>
+<h3 id="cpu温度">CPU温度</h3>
+<p>树莓派只有这个温度传感器。<br>
+读取<code>/sys/class/thermal/thermal_zone0/temp</code>这个文件即可。将读出来的数值除以1000就是摄氏度了。</p>
+<h3 id="cpu使用率">CPU使用率</h3>
+<p>读取<code>/proc/stat</code>。<br>
+各列分别为<code>name   user  nice   system      idle      iowait  irrq  softirq  steal guest guest_nice</code>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">cpu指标</th>
+<th>含义</th>
+<th>时间单位</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">user</td>
+<td>用户态时间</td>
+<td>jiffies</td>
+<td>一般/高优先级，仅统计nice&lt;=0</td>
+</tr>
+<tr>
+<td style="text-align:center">nice</td>
+<td>nice用户态时间</td>
+<td>jiffies</td>
+<td>低优先级，仅统计nice&gt;0</td>
+</tr>
+<tr>
+<td style="text-align:center">system</td>
+<td>内核态时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">idle</td>
+<td>空闲时间</td>
+<td>jiffies</td>
+<td>不包含IO等待时间</td>
+</tr>
+<tr>
+<td style="text-align:center">iowait</td>
+<td>I/O等待时间</td>
+<td>jiffies</td>
+<td>硬盘IO等待时间</td>
+</tr>
+<tr>
+<td style="text-align:center">irq</td>
+<td>硬中断时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">softirq</td>
+<td>软中断时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">steal</td>
+<td>被盗时间</td>
+<td>jiffies</td>
+<td>虚拟化环境中运行其他操作系统上花费的时间（since Linux 2.6.11）</td>
+</tr>
+<tr>
+<td style="text-align:center">guest</td>
+<td>来宾时间</td>
+<td>jiffies</td>
+<td>操作系统运行虚拟CPU花费的时间(since Linux 2.6.24)</td>
+</tr>
+<tr>
+<td style="text-align:center">guest_nice</td>
+<td>nice来宾时间</td>
+<td>jiffies</td>
+<td>运行一个带nice值的guest花费的时间(since Linux 2.6.33)</td>
+</tr>
+</tbody>
+</table>
+<p>说明：<br>
+1、1 jiffies = 0.01s = 10ms<br>
+2、常用计算等式：CPU时间 = user + system + nice + idle + iowait + irq + softirq<br>
+3、man手册中iowait有单独说明，iowait时间是不可靠值，具体原因如下：<br>
+1）CPU不会等待I/O执行完成，而iowait是等待I/O完成的时间。<br>
+当CPU进入idle状态，很可能会调度另一个task执行，所以iowait计算时间偏小；<br>
+2）多核CPU中，iowait的计算并非某一个核，因此计算每一个cpu的iowait非常困难<br>
+3）这个值在某些情况下会减少</p>
+<p>我采用<code>100.0 - (100.0 * idle) / (user + nice + system + idle + iowait + irq + softirq + steal + guest + guest_nice)</code>计算CPU当前的使用率。</p>
+<h3 id="内存使用率">内存使用率</h3>
+<p>读取<code>/proc/meminfo</code>。<br>
+我采用<code>100.0 * (memTotal - memAvailable) / memTotal</code>计算内存使用率。</p>
+<h2 id="实现方式">实现方式</h2>
+<p>其实就是一个 while(ture) ，然后每次 sleep 1秒再获取数据并保存到内存中。每隔一段时间将数据写入SD卡。虽然写入次数还是很多，但是由于集中写入的缘故，碎片化会大幅减少，而由于碎片导致的寿命损耗也会减少（具体参见闪存对一块只存了部分数据的block是如何新添数据的）。为了降低内存使用率，我采用C++编写这个程序。</p>
+<p>最后，这个项目开源在 <a href="https://github.com/xieincz/Linux-system-monitor">https://github.com/xieincz/Linux-system-monitor</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qt Creator 使用过程中的一些技巧&注意事项]]></title>
+        <id>https://xieincz.github.io/post/qt-creator-shi-yong-guo-cheng-zhong-de-yi-xie-ji-qiao-zhu-yi-shi-xiang/</id>
+        <link href="https://xieincz.github.io/post/qt-creator-shi-yong-guo-cheng-zhong-de-yi-xie-ji-qiao-zhu-yi-shi-xiang/">
+        </link>
+        <updated>2023-04-23T03:03:50.000Z</updated>
+        <content type="html"><![CDATA[<p>1.将构建目录设置成项目文件夹，而不是在项目文件夹外。可以避免（将概率降低到趋近于零）随机出现的构建失败（例如nikka 的 subcommand 出错）。</p>
+<p>2.用图形化界面来创建ui的时候。如果要让一个widget中的控件随这个widget的尺寸变化自动适应位置和尺寸。可以直接在预览窗口点击那个widget（注意不是右边那个树形列表），然后Creator上面那栏中的按钮就会变成可点击，我们可以根据需要设置想要的layout。</p>
+<p>3.如果发现某个控件的大小总是不能铺满理想中的区域。可能是旁边的控件占用面积的大小限制了它的尺寸（因为会自动对齐各个控件），可以用弹簧把旁边的控件的控件拉大。</p>
+<p>4.如果使用“提升到”功能，在编译的时候提示“ui_xxx.h”找不到自己提升到的类的头文件。可以把自己的头文件按照现有的目录结构复制到“cryo_EM_autogen\include”下面。例如继承自“QWeight”的类“MyWeight”（位于“项目根目录\lib\myweight.h”），我们将“lib”文件夹直接复制到“cryo_EM_autogen\include”中然后再编译即可（不过如果修改了文件还要再重新复制一次）。其实更方便的做法是创建符号链接，例如使用这个命令（需要以管理员身份运行）</p>
+<pre><code class="language-cmd">mklink /d &quot;E:\Temp\Qt-dev\build-cryo_EM-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\cryo_EM_autogen\include\lib&quot; &quot;E:\Temp\Qt-dev\cryo_EM\lib&quot;
+</code></pre>
+<p>不过前面这两个方法在执行cmake的clean之后都要重新做一遍。最好的方法是修改cmakelist，等我过一段时间有空了再更新这个方法。</p>
+<p>5.使用“提升到”功能的时候，要提升的qt类必须是你自己定义的那个类的基类。比如你拖了一个QWeight到界面中，你只能将它提升到自己写的继承自QWeight的MyWeight，而不能将一个QGraphicsView组件提升到你写的这个MyWeight。</p>
+<p>6.关于“qtcreator_ctrlc_stub: Command line failed”这个错误，其实用命令行手动进行编译和运行就好了。似乎是qtcreator_ctrlc_stub创建进程失败就会出现这个报错。刚重启完操作系统那会基本不会遇到这个错误，但是随着系统运行时间变长，这个错误的出现概率就会大大增加。最后会出现连续点几十下“构建”或者“运行”都是这个错误，大大影响了开发效率以及开发人员的心态 😦</p>
+<pre><code class="language-bash">#报错信息长这样
+16:08:26: 为项目myOpenGL5执行步骤 ...
+16:08:26: 正在启动 &quot;D:\Qt\Tools\CMake_64\bin\cmake.exe&quot; --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+
+qtcreator_ctrlc_stub: Command line failed: D:\Qt\Tools\CMake_64\bin\cmake.exe --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+16:08:27: 进程&quot;D:\Qt\Tools\CMake_64\bin\cmake.exe&quot;退出，退出代码 -1 。
+Error while building/deploying project myOpenGL5 (kit: Desktop Qt 6.5.0 MinGW 64-bit)
+When executing step &quot;构建&quot;
+16:08:27: Elapsed time: 00:01.
+</code></pre>
+<pre><code class="language-bash">#解决方法
+
+#复制可能要用的头文件等文件(这里的命令都是Windows下的，如果是Linux或者其他系统请自行更改)(注意，如果使用这个命令手动复制文件，最好不要再使用前面提到的“创建符号链接”了。因为会报错“共享冲突”要删除创建的符号链接才能正常复制)
+xcopy E:\Temp\Qt-dev\myOpenGL5 E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\myOpenGL5_autogen\include /Y /S
+
+#调用cmake进行构建
+D:\Qt\Tools\CMake_64\bin\cmake.exe --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+
+#运行构建出来的Qt应用程序
+cd E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug &amp;&amp; E: &amp;&amp; E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\myOpenGL5.exe
+
+</code></pre>
+<p>7.在6中我们通过手动执行命令来绕过“qtcreator_ctrlc_stub”导致的问题。但是我们看不到程序运行过程中的调试信息了。例如qDebug等等。我们可以在CMakeLists.txt中找到“WIN32_EXECUTABLE TRUE”这行，在它开头加上井号“#”将它注释掉。变成“#WIN32_EXECUTABLE TRUE”。然后就没问题了。。接下来在cmd中运行编译后的程序即可在cmd中看到输出。完成程序的最后测试之后记得要取消掉这个注释。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ubuntu 20.04 安装 Qt]]></title>
+        <id>https://xieincz.github.io/post/ubuntu-2004-an-zhuang-qt/</id>
+        <link href="https://xieincz.github.io/post/ubuntu-2004-an-zhuang-qt/">
+        </link>
+        <updated>2023-04-14T07:05:34.000Z</updated>
+        <content type="html"><![CDATA[<p>理论上22.04也可以（不过由于Wayland导致的诸多问题，省时省力的方法就是先用着20.04）</p>
+<h2 id="安装必要的软件包">安装必要的软件包</h2>
+<pre><code class="language-bash">sudo apt update
+sudo apt install libxcb-xinerama0 -y
+sudo apt install build-essential -y
+sudo apt install libgl1-mesa-dev -y
+sudo apt install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev -y
+</code></pre>
+<h2 id="安装qt">安装Qt</h2>
+<p>从官网上下载可执行文件然后运行即可（记得用&quot;chmod 775 filename&quot;给它赋予可执行权限）</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qt Creator 配置 git]]></title>
+        <id>https://xieincz.github.io/post/qt-creator-pei-zhi-git/</id>
+        <link href="https://xieincz.github.io/post/qt-creator-pei-zhi-git/">
+        </link>
+        <updated>2023-04-09T13:00:09.000Z</updated>
+        <content type="html"><![CDATA[<p>1.安装git，并且将git安装目录的bin目录添加到系统path中。<br>
+2.Qt Creator中像往常那样新建一个项目。如果是要添加现有的项目到git中就可以跳过此步。<br>
+3.GitHub创建一个仓库。<br>
+4.cmd中依次执行以下命令：</p>
+<pre><code class="language-cmd">git config --global user.name &quot;你自己的用户名&quot;
+git config --global user.email &quot;你自己的邮箱&quot;
+
+#生成密匙，注意参数大小写并且不要设置密码（直接回车）。生成后的公匙文件在 C:\Users\用户名\.ssh\id_rsa.pub
+ssh-keygen -t rsa -C&quot;你自己的邮箱&quot;
+
+#打开密匙文件并复制其中内容将该密匙添加到github  (Settings-&gt; SSH and GPG keys-&gt; new SSH key），然后添加公共密钥
+
+#到Qt项目的目录中
+git init
+git remote add origin git@github.com:你的用户名/你的仓库名.git
+git add -A     #添加所有文件
+git commit -m &quot;第一次上传&quot;   #写上修改说明
+git push -u origin master   #上传至仓库
+
+</code></pre>
+<p>5.之后每次push可以在Qt Creator中的“工具”-&gt;“Git”中操作即可</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[猪国杀（模板）]]></title>
+        <id>https://xieincz.github.io/post/zhu-guo-sha-mo-ban/</id>
+        <link href="https://xieincz.github.io/post/zhu-guo-sha-mo-ban/">
+        </link>
+        <updated>2023-03-20T01:30:47.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="请使用指定的代码模板完成该题~">请使用指定的代码模板完成该题~</h1>
+<ul>
+<li>由于原题在题面和数据上的一些小问题，本题经过了一些小修小改，数据，和题面，与 SDOI2010 略有不同。参考网络资料将让你在完成作业的路径上绕远路（不保证可行）并且收获甚少。相信自己，独立完成会收获很多，你也可以在思考无所获后向同学请教。</li>
+<li>代码模板精心制作，请大家理解后进行补全代码实验
+<ul>
+<li>本题代码模板不严格遵守面向对象的规则，而是面向教育用途设计</li>
+<li>比起费力优化代码的常数复杂度，更乐于精心设计将代码逻辑区分开</li>
+</ul>
+</li>
+<li>本实验考点：
+<ul>
+<li>问题理解及其逻辑化能力</li>
+<li><s>大型(显然并不大</s> 第三方代码框架理解和分析能力</li>
+<li>工程改动的创口分析和实践能力</li>
+<li>程序调试能力</li>
+</ul>
+</li>
+<li>期末将近，预祝同学们期末考得好成绩，不负努力，加油。</li>
+</ul>
+<h1 id="背景">背景</h1>
+<p>《猪国杀》是一种多猪牌类回合制游戏，一共有 3 种角色：主猪，忠猪，反猪。每局游戏主猪有且只有 1 只，忠猪和反猪可以有多只，每只猪扮演 1 种角色。</p>
+<h1 id="目的">目的</h1>
+<p>主猪 / MP：自己存活的情况下消灭所有的反猪。<br>
+忠猪 / ZP：不惜一切保护主猪，胜利条件与主猪相同。<br>
+反猪 / FP：杀死主猪。</p>
+<h1 id="游戏过程">游戏过程</h1>
+<p>游戏开始时，每个玩家手里都会有 4 张牌，且体力上限和初始体力都是 4 。</p>
+<p>开始游戏时，从主猪开始，按照逆时针方向（数据中就是按照编号从 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo>…</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1 , 2, 3 \ldots n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span></span></span></span> 的顺序）依次行动。</p>
+<p>每个玩家自己的回合可以分为 2 个阶段：</p>
+<ul>
+<li>摸牌阶段：从牌堆顶部摸 2 张牌，依次放到手牌的最右边；</li>
+<li>出牌阶段：你可以使用任意张牌，每次使用牌的时候都使用最靠左的能够使用的牌。当然，要满足如下规则：</li>
+</ul>
+<ol>
+<li>如果没有猪哥连弩，每个出牌阶段只能使用 1 次「杀」来攻击；</li>
+<li>任何牌被使用后被弃置（武器是装备上）；被弃置的牌以后都不能再用，即与游戏无关。</li>
+</ol>
+<h1 id="各种牌介绍">各种牌介绍</h1>
+<p>每张手牌用 1 个字母表示，字母代表牌的种类。</p>
+<h2 id="基本牌">基本牌</h2>
+<p>『桃 / P』在自己的回合内，如果自己的体力值不等于体力上限，那么使用 1 个桃可以为自己补充 1 点体力，否则不能使用桃；桃只能对自己使用；在自己的回合外，如果自己的血变为 0 或者更低，那么也可以使用。</p>
+<p>『杀 / K』在自己的回合内，对攻击范围内除自己以外的 1 名角色使用。如果没有被『闪』抵消，则造成 1 点伤害。无论有无武器，杀的攻击范围都是 1。</p>
+<p>『闪 / D』当你受到杀的攻击时，可以弃置 1 张闪来抵消杀的效果。</p>
+<h2 id="锦囊牌">锦囊牌</h2>
+<p>『决斗 / F』出牌阶段，对除自己以外任意 1 名角色使用，由目标角色先开始，自己和目标角色轮流弃置 1 张杀，首先没有杀可弃的一方受到 1 点伤害，另一方视为此伤害的来源。</p>
+<p>『南猪入侵 / N』出牌阶段，对除你以外所有角色使用，按逆时针顺序从使用者下家开始依次结算，除非弃置 1 张杀，否则受到 1 点伤害。</p>
+<p>『万箭齐发 / W』和南猪入侵类似，不过要弃置的不是杀而是闪。</p>
+<p>『无懈可击 / J』在目标锦囊生效前抵消其效果。每次有 1 张锦囊即将生效时，从使用这张锦囊的猪开始，按照逆时针顺序，依次得到使用无懈可击的机会；效果：用于决斗时，决斗无效并弃置；用于南猪入侵或万箭齐发时，当结算到某个角色时才能使用，当前角色不需弃置牌并且不会受到伤害（仅对 1 个角色产生效果）；用于无懈可击时，成为目标的无懈可击被无效。</p>
+<h2 id="装备牌">装备牌</h2>
+<p>『猪哥连弩 / Z』武器，攻击范围 1 ，出牌阶段你可以使用任意张杀; 同一时刻最多只能装 1 把武器；如果先前已经有了 1 把武器，那么之后再装武器的话，会弃置以前的武器来装现在的武器。</p>
+<h1 id="特殊事件及概念解释">特殊事件及概念解释</h1>
+<p><strong>伤害来源</strong>：杀、南猪入侵、万箭齐发的伤害来源均是使用该牌的猪，决斗的伤害来源如上；</p>
+<p><strong>距离</strong>：两只猪的距离定义为沿着逆时针方向间隔的猪数 +1 。即初始时 1 和 2 的距离为 1 ，但是 2 和 1 的距离就是 n−1 。注意一个角色的死亡会导致一些猪距离的改变；</p>
+<p><strong>玩家死亡</strong>：如果该玩家的体力降到 0 或者更低，并且自己手中没有足够的桃使得自己的体力值回到 1 ，那么就死亡了，死亡后所有的牌（装备区，手牌区）被弃置</p>
+<p><strong>奖励与惩罚</strong>：反猪死亡时，最后一个伤害来源处（即使是反猪）立即摸 3 张牌。忠猪死亡时，如果最后一个伤害来源是主猪，那么主猪所有装备牌、手牌被弃置。</p>
+<p><strong>注意：一旦达成胜利条件，游戏立刻结束，因此即使会摸 3 张牌或者还有牌可以用也不用执行了。</strong></p>
+<p>现在，我们已经知道每只猪的角色、手牌，还有牌堆初始情况，并且假设每个角色会按照如下的行为准则进行游戏，你需要做的就是告诉最后的结果。</p>
+<h1 id="几种行为">几种行为:</h1>
+<p><strong>献殷勤</strong>：使用无懈可击挡下南猪入侵、万箭齐发、决斗；使用无懈可击抵消表敌意的锦囊效果；<br>
+<strong>表敌意</strong>：对某个角色使用杀、决斗；使用无懈可击抵消献殷勤的锦囊效果；<br>
+<strong>跳忠</strong>：即通过行动表示自己是忠猪。跳忠行动就是对主猪或对某只已经跳忠的猪献殷勤，或者对某只已经跳反的猪表敌意；<br>
+<strong>跳反</strong>：即通过行动表示自己是反猪。跳反行动就是对主猪或对某只已经跳忠的猪表敌意，或者对某只已经跳反的猪献殷勤。</p>
+<p>注意：忠猪不会跳反，反猪也不会跳忠；不管是忠猪还是反猪，<strong>能够跳必然跳</strong>。</p>
+<h1 id="行动准则">行动准则</h1>
+<h2 id="共性">共性</h2>
+<ul>
+<li>每个角色如果手里有桃且生命值未满，那么必然吃掉；</li>
+<li>有南猪入侵、万箭齐发、必然使用；有装备必然装上；</li>
+<li>受到杀时，有闪必然弃置；</li>
+<li>响应南猪入侵或者万箭齐发时候，有杀 / 闪必然弃置；</li>
+<li>不会对未表明身份的猪献殷勤（包括自己）。</li>
+</ul>
+<h2 id="特性">特性</h2>
+<p>主猪：</p>
+<ul>
+<li>主猪会认为「没有跳身份，且用南猪入侵 / 万箭齐发对自己造成伤害的猪」是类反猪（没伤害到不算，注意类反猪并没有表明身份），如果之后跳了，那么主猪会重新认识这只猪；</li>
+<li>对于每种表敌意的方式，对逆时针方向能够执行到的第一只已跳反猪表；如果没有，对逆时针方向能够执行到的第一只类反猪表，再没有，那么就不表敌意；</li>
+<li>决斗时会不遗余力弃置杀；</li>
+<li>如果能对已经跳忠的猪或自己献殷勤，那么一定献；如果能够对已经跳反的猪表敌意，那么一定表。</li>
+</ul>
+<p>忠猪：</p>
+<ul>
+<li>对于每种表敌意的方式，对「逆时针方向能够执行到的第一只已经跳反的猪」表，如果没有，那么就不表敌意；<br>
+决斗时，如果对方是主猪，那么不会弃置杀，否则，会不遗余力弃置杀；</li>
+<li>如果有机会对主猪或者已经跳忠的猪献殷勤，那么一定献。</li>
+</ul>
+<p>反猪：</p>
+<ul>
+<li>对于每种表敌意的方式，如果有机会则对主猪表，否则，对「逆时针方向能够执行到的第一只已经跳忠的猪」表，如果没有，那么就不表敌意；</li>
+<li>决斗时会不遗余力弃置杀；</li>
+<li>如果有机会对已经跳反的猪献殷勤，那么一定献。</li>
+</ul>
+<h1 id="输入格式">输入格式</h1>
+<p>输入文件第一行包含两个正整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>(</mo><mn>2</mn><mo>⩽</mo><mi>n</mi><mo>⩽</mo><mn>10</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">n (2 \leqslant n \leqslant 10)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel amsrm">⩽</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7733399999999999em;vertical-align:-0.13667em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel amsrm">⩽</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mo>(</mo><mi>m</mi><mo>⩽</mo><mn>2000</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">m (m \leqslant 2000)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel amsrm">⩽</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose">)</span></span></span></span>，分别代表玩家数和牌堆中牌的数量。数据保证牌的数量够用。</p>
+<p>接下来 n 行，每行 5 个字符串，依次表示对第 i 只猪的角色和初始 4 张手牌描述。编号为 1 的肯定是主猪。</p>
+<p>再接下来一行，一共 m 个字符串，按照从牌堆顶部到牌堆底部的顺序描述每张牌。</p>
+<p>注意：所有的相邻的两个字符串都严格用 1 个空格隔开，行尾没有多余空格。</p>
+<h1 id="输出格式">输出格式</h1>
+<p>输出数据第一行包含一个字符串代表游戏结果。如果是主猪胜利，那么输出 MP ，否则输出 FP 。数据保证游戏总会结束。</p>
+<p>接下来 n 行，第 i 行是对第 i 只猪的手牌描述（注意只需要输出手牌），按照手牌从左往右的顺序输出，相邻两张牌用 1 个空格隔开，行末尾没有多余空格。如果这只猪已阵亡，那么只要输出 DEAD 即可。</p>
+<p>注意：如果要输出手牌而没有手牌的话，那么只需输出 1 个空行。</p>
+<h1 id="样例">样例</h1>
+<p>Input:</p>
+<pre><code>3 10
+MP D D F F
+ZP N N N D
+FP J J J J
+F F D D J J F F K D
+</code></pre>
+<p>Output:</p>
+<pre><code>FP
+DEAD
+DEAD
+J J J J J J D
+</code></pre>
+<p>解释:</p>
+<ul>
+<li>
+<p>第一回合：</p>
+<ul>
+<li>主猪没有目标可以表敌意；</li>
+<li>接下来忠猪使用了 3 张南猪入侵，主猪掉了 3 点体力，并认为该角色为类反猪，3 号角色尽管手里有无懈可击，但是因为自己未表明身份，所以同样不能对自己用，乖乖掉 3 点体力；</li>
+</ul>
+</li>
+<li>
+<p>下一回合：</p>
+<ul>
+<li>反猪无牌可出；</li>
+<li>接下来主猪对着类反猪爆发，使用 4 张决斗，忠猪死亡，结果主猪弃掉所有牌；</li>
+</ul>
+</li>
+</ul>
+<h1 id="子任务">子任务</h1>
+<p>一共 20 组测试数据，每个点 5 分。</p>
+<p>10% 的数据没有锦囊牌，另外 20% 的数据没有无懈可击。</p>
+<h1 id="测试用例">测试用例</h1>
+<h2 id="1">1</h2>
+<h3 id="输入">输入</h3>
+<pre><code>3 25
+MP K K K K
+ZP Z Z Z Z
+FP J J J J
+K K Z Z J J K K W Z W W K Z J J K K J J K K W W W
+</code></pre>
+<h3 id="输出">输出</h3>
+<pre><code>FP
+DEAD
+DEAD
+J J J J J J J J J J W
+</code></pre>
+<pre><code class="language-c++">
+#include &lt;bits/stdc++.h&gt;
+#define rep(i, s, t) for(int i=s;i&lt;=t;i++)
+using namespace std;
+
+/* 全局变量 */
+int n;                   // 猪的数量
+queue&lt;char&gt; allCards;    // 牌堆
+
+struct Pig {
+/* 属性 */
+    int index;            // 当前猪下标
+    int hp = 4;           // 血量
+    char type;            // 猪的类型: M, Z, F
+    char jumpType = 0;    // 跳的类型: Z(忠), F(反), f(MP视角的类反), 0(空), 注意对MP来说针对F更优先于f
+    bool arming = false;  // 有无装备
+    list&lt;char&gt; cards;     // 手中的牌
+/* 方法定义, 这里是完成本题必须的方法, 可以不必多定义了 */
+    void jump(){jumpType = type=='F'?'F':'Z';} // 跳阵营
+    bool isJumpItsFriend(Pig* pig) { return pig-&gt;type == 'F' ? jumpType == 'F' : jumpType == 'Z'; } // 我跳它朋友了吗?
+    Pig* getNextPig();    // 获取存活的下家
+    void addCards(int num);// 从牌堆拿牌放到自己手右
+    bool del(char c);     // 删掉手里一张牌, 删成功则返回true
+    void hurt(Pig* attacker);// 被攻击掉一点血
+    bool cost(Pig* attacker, char c);// 被迫消耗手中一张牌, 消耗成功返回true并不减血, 否则减血, 减血到0尝试用桃, 无则死亡, 根据身份对杀者做后续处理
+    bool useP();          // 主动使用桃, 满足使用条件就使用, 使用后返回true
+    bool useK();          // 主动使用杀, 满足使用条件就使用, 使用后返回true
+    bool useF();          // 主动使用决斗, 满足使用条件就使用, 使用后返回true
+    bool useN();          // 主动使用南猪入侵, 满足使用条件就使用, 使用后返回true
+    bool useW();          // 主动使用万箭齐发, 满足使用条件就使用, 使用后返回true
+    bool findJ(Pig* attacker); // 被迫去求无懈可击, 求到则返回true
+    bool useJ(Pig* pig);  // 帮某个猪用无懈可击, 用成功返回true
+} ps[15];
+
+/* 全局方法 */
+bool isGameEnd() {
+    if (ps[0].hp &lt;= 0) return true;
+    rep(i, 1, n-1)
+        if (ps[i].type == 'F' &amp;&amp; ps[i].hp &gt; 0)
+            return false;
+    return true;
+}
+int cnt = 0;
+void judgeGameEnd() {
+    if (isGameEnd()) {
+        printf(ps[0].hp &gt; 0 ? &quot;MP\n&quot; : &quot;FP\n&quot;);
+        rep(i, 0, n-1) {
+            if (ps[i].hp &lt;= 0) {
+                printf(&quot;DEAD\n&quot;);
+            } else {
+                for (list&lt;char&gt;::iterator it = ps[i].cards.begin(); it != ps[i].cards.end(); it++)
+                    printf(it==ps[i].cards.end()?&quot;%c&quot;:&quot;%c &quot;, *it);
+                printf(&quot;\n&quot;);
+            }
+        }
+        exit(0);
+    }
+}
+
+void solve() {
+    ps[0].jump();
+    while (true) {
+        rep(i, 0, n-1) {
+            if (ps[i].hp &lt;= 0) continue;
+            ps[i].addCards(2);
+            bool usedK = false;
+            for (list&lt;char&gt;::iterator it = ps[i].cards.begin(); it != ps[i].cards.end(); it++) {
+                bool used = false;
+                char c = *it;
+                it = ps[i].cards.erase(it);
+                switch (c) {
+                    case 'P': used = ps[i].useP(); break;
+                    case 'K': if (!usedK || ps[i].arming) used = usedK = ps[i].useK(); break;
+                    case 'F': used = ps[i].useF(); break;
+                    case 'N': used = ps[i].useN(); break;
+                    case 'W': used = ps[i].useW(); break;
+                    case 'Z': ps[i].arming = used = true; break;
+                }
+                if (used) it = --ps[i].cards.begin();
+                else it = ps[i].cards.insert(it, c);
+                if (ps[i].hp &lt;= 0) break;
+            }
+        }
+    }
+}
+/* 主控方法 */
+int main() {
+    // Input
+    int m; scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+    char s[5];
+    rep(i, 0, n-1) {
+        ps[i].index = i;
+        scanf(&quot;%s&quot;, s), ps[i].type = s[0];
+        rep(j, 1, 4) scanf(&quot;%s&quot;, s), ps[i].cards.push_back(s[0]);
+    }
+    while(m--) scanf(&quot;%s&quot;, s), allCards.push(s[0]);
+    // To solve
+    solve();
+}
+
+Pig* Pig::getNextPig() {
+    int nxt = (index + 1) % n;
+    while (ps[nxt].hp &lt;= 0) {
+        nxt = (nxt+1) % n;
+    }
+    return &amp;ps[nxt];
+}
+
+void Pig::addCards(int num) {
+    rep(i,1,num) {
+        cards.push_back(allCards.front());
+        allCards.pop();
+    }
+}
+
+bool Pig::useP() {
+    if (hp &lt; 4) {
+        hp ++;
+        return true;
+    }
+    return false;
+}
+
+void Pig::hurt(Pig *attacker) {
+    if (--hp == 0) {
+        if (this-&gt;del('P')) {
+            this-&gt;useP();
+        } else {
+            judgeGameEnd();
+            switch(type) {
+                case 'F': attacker-&gt;addCards(3); break;
+                case 'Z': if (attacker-&gt;type == 'M') attacker-&gt;cards.clear(), attacker-&gt;arming=false; break;
+            }
+        }
+    }
+}
+
+bool Pig::cost(Pig* attacker, char c) {
+    if (this-&gt;del(c)) {
+        return true;
+    }
+    hurt(attacker);
+    return false;
+}
+
+bool Pig::findJ(Pig *attacker) {
+    Pig* nxt = attacker;
+    do {
+        // &quot;找个好心的猪猪帮我挡刀&quot;
+        if (this-&gt;isJumpItsFriend(nxt) &amp;&amp; nxt-&gt;del('J')) {
+            nxt-&gt;jump();
+            return !nxt-&gt;useJ(this);
+        }
+        nxt = nxt-&gt;getNextPig();
+    } while (nxt != attacker);
+    return false;
+}
+
+bool Pig::useJ(Pig *pig) {
+    for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+        // &quot;套娃指找找有没有猪猪会阻止我帮别人挡刀&quot;
+        if (!this-&gt;isJumpItsFriend(nxt) &amp;&amp; nxt-&gt;del('J')) {
+            nxt-&gt;jump();
+            return !pig-&gt;findJ(nxt);
+        }
+    }
+    return false;
+}
+
+//主动使用杀, 满足使用条件就使用, 使用后返回true
+//忠猪不杀忠猪、主猪，反猪不杀反猪，主猪不杀忠猪
+bool Pig::useK() {
+    Pig* nxt = getNextPig();
+    if (type == 'M') {  //主猪
+        if (nxt-&gt;jumpType == 'F'||nxt-&gt;jumpType == 'f') {
+            nxt-&gt;cost(this, 'D');//消耗一张闪，如果闪不够，则扣一滴血
+            return true;
+        }
+    } else if (type == 'F') {  //反猪
+        if (nxt-&gt;jumpType == 'Z') {
+            this-&gt;jump();//不管是否杀成功都已经暴露了自己的身份
+            nxt-&gt;cost(this, 'D');//消耗一张闪，如果闪不够，则扣一滴血
+            return true;
+        }
+    } else if (type == 'Z') {  //忠猪
+        if (nxt-&gt;jumpType == 'F') {
+            this-&gt;jump();//不管是否杀成功都已经暴露了自己的身份
+            nxt-&gt;cost(this, 'D');//消耗一张闪，如果闪不够，则扣一滴血
+            return true;
+        }
+    }
+    return false;
+}
+// 主动使用决斗, 满足使用条件就使用, 使用后返回true
+//如果主猪对类反猪决斗，就会导致类反猪直接扣一血。一旦用了决斗就表名身份了
+bool Pig::useF() {
+    if (type == 'M') {
+        for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+            if (nxt-&gt;jumpType == 'F') {//优先查找反猪
+                if (nxt-&gt;findJ(this)) {//看看有没有猪用无懈可击帮它挡下攻击
+                    return true;//如果有猪帮它用了无懈可击本次攻击就无效
+                }
+                //双方轮流消耗一张杀，直到有一方没有杀
+                while (nxt-&gt;cost(this, 'K')) {//不断消耗杀直到没有杀
+                    if (!this-&gt;del('K')) {//如果自己没有杀了，就扣自己一滴血
+                        this-&gt;hurt(nxt);
+                        return true;
+                    }
+                }
+                return true;
+            }
+        }
+        for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+            if (nxt-&gt;jumpType == 'f') {//如果没有反猪才查找类反猪
+                if (nxt-&gt;type == 'Z') {//如果类反猪是忠猪，就扣一滴血，因为类反猪被主猪决斗不出杀
+                    nxt-&gt;hurt(this);
+                } else {//如果类反猪是反猪，双方轮流消耗一张杀，直到有一方没有杀
+                    while (nxt-&gt;cost(this, 'K')) {
+                        if (!this-&gt;del('K')) {
+                            this-&gt;hurt(nxt);
+                            return true;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+    } else if (type == 'F') {//如果是反猪，就查找主猪
+        for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+            if (nxt-&gt;type == 'M') {
+                this-&gt;jump();//不管是否决斗成功都已经暴露了自己的身份
+                if (nxt-&gt;findJ(this)) {//看看有没有猪用无懈可击帮它挡下攻击
+                    return true;
+                }
+                while (nxt-&gt;cost(this, 'K')) {//不断消耗杀直到没有杀
+                    if (!this-&gt;del('K')) {
+                        this-&gt;hurt(nxt);
+                        return true;
+                    }
+                }
+                return true;
+            }
+        }  //决斗一定能对主猪表，因为主猪一开始就表名身份了
+    } else if (type == 'Z') {//如果是忠猪，就查找反猪
+        for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+            if (nxt-&gt;jumpType == 'F') {
+                this-&gt;jump();//不管是否决斗成功都已经暴露了自己的身份
+                if (nxt-&gt;findJ(this)) {//看看有没有猪用无懈可击帮它挡下攻击
+                    return true;
+                }
+                while (nxt-&gt;cost(this, 'K')) {//不断消耗杀直到没有杀
+                    if (!this-&gt;del('K')) {
+                        this-&gt;hurt(nxt);
+                        return true;
+                    }
+                }
+                return true;
+            }
+        }
+    }
+    return false;
+}
+// 主动使用南猪入侵, 满足使用条件就使用, 使用后返回true
+bool Pig::useN() {
+    for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+        //如果用了J就不会执行用K的函数了
+        //首先看看有没有猪用无懈可击帮它挡下攻击
+        //如果没有猪用无懈可击，就尝试消耗一张杀(消耗失败会扣被攻击方的血)
+        //如果扣血的是主猪，并且自己没有跳忠，就会被主猪认为是类反猪
+        if (!nxt-&gt;findJ(this) &amp;&amp; !nxt-&gt;cost(this, 'K') &amp;&amp; jumpType == 0 &amp;&amp; nxt-&gt;type == 'M') {
+            jumpType = 'f';//自己被认为是类反猪
+        }
+    }
+    return true;//一定能用成功
+}
+// 主动使用万箭齐发, 满足使用条件就使用, 使用后返回true
+bool Pig::useW() {
+    for (Pig* nxt = getNextPig(); nxt != this; nxt = nxt-&gt;getNextPig()) {
+        //首先看看有没有猪用无懈可击帮它挡下攻击
+        //如果没有猪用无懈可击，就尝试消耗一张闪(消耗失败会扣被攻击方的血)
+        //如果扣血的是主猪，并且自己没有跳忠，就会被主猪认为是类反猪
+        if (!nxt-&gt;findJ(this) &amp;&amp; !nxt-&gt;cost(this, 'D') &amp;&amp; jumpType == 0 &amp;&amp; nxt-&gt;type == 'M') {
+            jumpType = 'f';//自己被认为是类反猪
+        }
+    }
+    return true;//一定能用成功
+}
+// 删掉手里一张牌, 删成功则返回true
+bool Pig::del(char c) {
+    for (list&lt;char&gt;::iterator it = cards.begin(); it != cards.end(); it++) {
+        if (*it == c) {  //找到了,就删掉
+            cards.erase(it);
+            return true;
+        }
+    }
+    return false;  //没找到
+}
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[记事本]]></title>
+        <id>https://xieincz.github.io/post/ji-shi-ben/</id>
+        <link href="https://xieincz.github.io/post/ji-shi-ben/">
+        </link>
+        <updated>2023-03-20T01:22:32.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>注：本题有较多的部分分，请参看数据规模部分。</p>
+</blockquote>
+<h3 id="题目描述">题目描述</h3>
+<p>记事本是 Windows 平台下一款经典的文本编辑器，其存储文件的扩展名为 <code>.txt</code>，文件属性没有任何格式标签或者风格，所以相当适合在 DOS 环境中编辑。</p>
+<p>在本题中，可能会用到的按键如下图所示：</p>
+<figure data-type="image" tabindex="1"><img src="https://xieincz.github.io/post-images/%E8%AE%B0%E4%BA%8B%E6%9C%AC1.png" alt="" loading="lazy"></figure>
+<h4 id="光标移动">光标移动</h4>
+<p>光标表示当前要进行输入等操作的位置，在本题中，我们假设所有字符都是<strong>等宽</strong>的。</p>
+<p>光标的位置可以用行列坐标来描述，光标所在的行和列均从1开始，例如：</p>
+<figure data-type="image" tabindex="2"><img src="https://xieincz.github.io/post-images/%E8%AE%B0%E4%BA%8B%E6%9C%AC2.png" alt="" loading="lazy"></figure>
+<p>以下操作可以进行光标的移动，使用 <code>MOVE &lt;comd&gt;</code> 输入相关的操作，其中 <code>&lt;comd&gt;</code> 表示指令，可以使用以下字符串代替：</p>
+<ul>
+<li><code>Home</code>：把光标移动到当前行的开头。</li>
+<li><code>End</code>：把光标移动到当前行的末尾。</li>
+<li><code>Up</code>：光标移动到上一行的相同列。
+<ul>
+<li>若当前为第一行，则不进行任何操作。</li>
+<li>若上一行的列数小于当前光标的列数，则将光标移动到上一行的末尾。</li>
+</ul>
+</li>
+<li><code>Down</code>：光标移动到下一行的相同列。
+<ul>
+<li>若当前为最后一行，则不进行任何操作。</li>
+<li>若下一行的列数小于当前光标的列数，则将光标移动到下一行的末尾。</li>
+</ul>
+</li>
+<li><code>Left</code>：光标左移一位。
+<ul>
+<li>若当前光标位于记事本开始，则不进行任何操作。</li>
+<li>若当前光标处于某一行的开头，则将光标移动到上一行的末尾。</li>
+</ul>
+</li>
+<li><code>Right</code>：光标右移一位。
+<ul>
+<li>若当前光标位于记事本末尾，则不进行任何操作。</li>
+<li>若当前光标处于某一行的末尾，则将光标移动到下一行的开头。</li>
+</ul>
+</li>
+</ul>
+<h4 id="输入">输入</h4>
+<p>以下操作可以在光标后进行输入，使用 <code>INSERT &lt;comd&gt;</code> 输入相关的操作，其中 <code>&lt;comd&gt;</code> 表示指令，可以使用以下字符串代替：</p>
+<ul>
+<li>
+<p><code>Char &lt;char&gt;</code>：输入一个字符，其中 <code>&lt;char&gt;</code> 是输入的字符。</p>
+<ul>
+<li><code>&lt;char&gt;</code> 可能是一下字符中的任意一个：</li>
+</ul>
+<blockquote>
+<p>注：下列字符中<strong>不包含空格与换行符</strong>。</p>
+</blockquote>
+<pre><code>`1234567890-=~!@#$%^&amp;*()_+qwertyuiop[]\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:&quot;zxcvbnm,./ZXCVBNM&lt;&gt;?
+</code></pre>
+<ul>
+<li>例如：<code>INSERT Char a</code> 表示在当前光标后插入 <code>a</code> 字符。</li>
+</ul>
+</li>
+<li>
+<p><code>Enter</code>：输入换行符，并进行换行。</p>
+</li>
+<li>
+<p><code>Space</code>：输入空格。</p>
+</li>
+<li>
+<p><code>Paste</code>：在当前光标后，插入粘贴板中的内容，若粘贴板中无内容，则忽略当前操作。</p>
+</li>
+</ul>
+<h4 id="删除">删除</h4>
+<p>以下操作可以删除记事本中的内容，使用 <code>REMOVE &lt;comd&gt;</code> 输入相关的操作，其中 <code>&lt;comd&gt;</code> 表示指令，可以使用以下字符串代替：</p>
+<ul>
+<li><code>Del</code>：删除当前光标位置之后的一个字符。
+<ul>
+<li>若该字符为换行符，则当前行与下一行合并为一行。</li>
+<li>若当前光标在文件末尾，则忽略当前操作。</li>
+</ul>
+</li>
+<li><code>Backspace</code>：删除当前光标位置之前的一个字符。
+<ul>
+<li>若该字符为换行符，则当前行与上一行合并为一行。</li>
+<li>若当前光标在文件开头，则忽略当前操作。</li>
+</ul>
+</li>
+</ul>
+<h4 id="粘滞功能分数占比-24分">粘滞功能（分数占比 24分）</h4>
+<p>输入<code>SHIFT</code>指令，可以启动或关闭粘滞功能。</p>
+<ul>
+<li>
+<p>开始时粘滞功能默认为关闭状态，之后每次点击：</p>
+<ul>
+<li>若当前为启动状态，则关闭；</li>
+<li>若当前为关闭状态，则启动。</li>
+</ul>
+</li>
+<li>
+<p>粘滞功能启动时，记录当前的光标位置为 <strong>记录点</strong>。</p>
+</li>
+<li>
+<p>粘滞功能关闭时，若此时的光标位置与 <strong>记录点</strong> 的位置不同，则<strong>进入选中状态</strong>。</p>
+</li>
+<li>
+<p>粘滞功能启动后，直到功能关闭前，<strong>不会对记事本进行除光标移动外的任何操作</strong>。</p>
+</li>
+</ul>
+<p>当进入选中状态后，通过记录点与当前光标，可以唯一的确定一段内容，现令记录点与光标之间的<strong>所有字符</strong>（包括换行符）为 <strong>选中字段</strong>。</p>
+<p>例如，记录点位于第1行第2列，光标位于第2行第4列时，选中字段如下图所示：</p>
+<figure data-type="image" tabindex="3"><img src="https://xieincz.github.io/post-images/%E8%AE%B0%E4%BA%8B%E6%9C%AC3.png" alt="" loading="lazy"></figure>
+<p>当前 <strong>处于选中状态</strong> 时，对于不同的情况，需要按照序号依次执行以下操作：</p>
+<ul>
+<li>
+<p>若进行<strong>光标移动</strong>：</p>
+<ol>
+<li><strong>退出选中状态</strong>；</li>
+<li>尝试进行光标的移动（无论光标最终是否移动，都会退出选中状态）。</li>
+</ol>
+</li>
+<li>
+<p>若进行<strong>输入</strong>：</p>
+<ol>
+<li>将选中内容替换为输入内容；</li>
+<li><strong>退出选中状态</strong>。</li>
+</ol>
+</li>
+<li>
+<p>若进行<strong>删除</strong>：</p>
+<ol>
+<li>删除当前选中内容；</li>
+<li><strong>退出选中状态</strong>。</li>
+</ol>
+</li>
+<li>
+<p>若再次启动<strong>粘滞功能</strong>：<strong>退出选中状态</strong>，但保留上一次选中字段的 <strong>记录点</strong> 作为当前<strong>记录点</strong>。</p>
+</li>
+<li>
+<p>若进行查找，字数统计，复制，打印操作，则在操作后仍然<strong>保持选中状态</strong>。</p>
+</li>
+</ul>
+<h4 id="查找">查找</h4>
+<p>输入<code>FIND &lt;word&gt;</code> 指令，进行字符串查找，其中 <code>&lt;word&gt;</code> 为输入的要查找的字符串，该字符串中不包含空格与换行符。</p>
+<p>执行该指令时，要根据当前是否处于选中状态做不同的处理：</p>
+<ul>
+<li>若当前<strong>处于选中状态</strong>：查找输入字符串在<strong>选中字段</strong>中的出现次数并输出。</li>
+<li>否则：查找输入字符串在当前记事本中的出现次数并输出。</li>
+</ul>
+<p>例如：当前没有选中的内容，且记事本中的内容为 <code>ababa</code>，若执行 <code>FIND aba</code>，则应当输出2，分别在第1列与第3列出现过。</p>
+<h4 id="字数统计">字数统计</h4>
+<p>输入<code>COUNT</code> 指令，进行字数统计。</p>
+<p>执行该指令时，要根据当前是否处于选中状态做不同的处理：</p>
+<ul>
+<li>若当前<strong>处于选中状态</strong>：输出当前<strong>选中字段</strong>中的<strong>可见字符</strong>（不包括空格与换行符）的数量。</li>
+<li>否则：输出当前文档中<strong>可见字符</strong>（不包括空格与换行符）的数量。</li>
+</ul>
+<h4 id="复制">复制</h4>
+<p>输入<code>COPY</code>指令，进行复制操作。</p>
+<p>执行该指令时，要根据当前是否处于选中状态做不同的处理：</p>
+<ul>
+<li>若当前<strong>处于选中状态</strong>：复制<strong>选中字段</strong>到粘贴板；</li>
+<li>否则，
+<ul>
+<li>若当前行不为空：复制当前行的内容（不包括换行符）到粘贴板；</li>
+<li>否则：忽略当前操作。</li>
+</ul>
+</li>
+</ul>
+<h4 id="打印">打印</h4>
+<p>输入<code>PRINT</code> 指令，输出当前的记事本中的全部内容，并在之后输出一个换行符。</p>
+<h3 id="输入格式">输入格式</h3>
+<p>输入包含 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 行。<br>
+第一行包含一个整数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>，表示接下来指令的数量。<br>
+接下来 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span> 行，每行一条指令，格式形如题目描述中的叙述。</p>
+<h3 id="输出格式">输出格式</h3>
+<p>对于需要输出的指令，进行相应的输出。<br>
+若为 <code>FIND</code> 与 <code>COUNT</code> 操作，输出一行表示相应的数字。<br>
+若为 <code>PRINT</code>操作，则输出若干行，表示记事本的当前内容，并在之后输出一个换行。</p>
+<p><strong>请注意：所有的输出不要有多余的空格。</strong></p>
+<h3 id="测试样例">测试样例</h3>
+<h4 id="样例输入">样例输入</h4>
+<pre><code>20
+INSERT Char #
+INSERT Enter
+INSERT Char C
+INSERT Enter
+INSERT Space
+INSERT Char _
+INSERT Char _
+PRINT
+INSERT Char &gt;
+INSERT Enter
+INSERT Char h
+INSERT Char h
+INSERT Char h
+INSERT Enter
+PRINT
+COUNT
+FIND __
+REMOVE Del
+REMOVE Backspace
+PRINT
+
+</code></pre>
+<h4 id="样例输出">样例输出</h4>
+<pre><code>#
+C
+ __
+#
+C
+ __&gt;
+hhh
+
+8
+1
+#
+C
+ __&gt;
+hhh
+</code></pre>
+<h3 id="数据规模">数据规模</h3>
+<p>对于 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>100</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">100\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.80556em;vertical-align:-0.05556em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">%</span></span></span></span> 的测试数据，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>5000</mn></mrow><annotation encoding="application/x-tex">1 \le n \le 5000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">5</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span></span></span></span>。</p>
+<p>不同测试点所包含的功能不同，其具体情况如下表所示。</p>
+<figure data-type="image" tabindex="4"><img src="https://xieincz.github.io/post-images/%E8%AE%B0%E4%BA%8B%E6%9C%AC4.png" alt="" loading="lazy"></figure>
+<p><a href="https://extremevision-js-userfile.oss-cn-hangzhou.aliyuncs.com/user-49035-files/6284d7be-bf9c-4947-9f66-b7f7d04ca4d7/notebook.zip">点击此处下载额外的测试用例</a></p>
+<pre><code class="language-c++">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+enum comd {
+    home,
+    en,  // end
+    le,  // left
+    ri,  // right
+    up,
+    down,
+    del,
+    backspace
+};
+
+string txt, copyTxt;
+int remember = -1, now = -1;  //选区，string的下标，当执行shift就更新remember=now
+bool selected = false, shifted = false, haveCopy = false;
+
+int move(comd com) {
+    selected = false;
+    if (com == le) {
+        if (now == -1)  //如果光标在开头，则不能左移
+            return 0;
+        now--;
+        return 1;
+    } else if (com == ri) {
+        if (now == txt.size() - 1)  //如果在文档末尾
+            return 0;
+        now++;
+        return 1;
+    } else if (com == home) {  //前往上一行换行符后
+        int t = 0;
+        while (now &gt; -1 &amp;&amp; txt[now] != '\n')
+            now--,t++;
+        return t;
+    } else if (com == en) {  //前往本行换行符前
+        int t = 0;
+        while (now + 1 != txt.size() &amp;&amp; txt[now + 1] != '\n')
+            now++,t++;
+        return t;
+    } else if (com == up) {
+        auto col = move(home);
+        move(le);
+        move(home);
+        while (col &gt; 0 &amp;&amp; now + 1 != txt.size() &amp;&amp; txt[now + 1] != '\n')
+            move(ri),col--;
+    } else if (com == down) {
+        auto col = move(home);
+        move(en);
+        if (!move(ri))
+            move(home);
+        while (col &gt; 0 &amp;&amp; now + 1 != txt.size() &amp;&amp; txt[now + 1] != '\n')
+            move(ri),col--;
+    }
+    return 0;
+}
+
+//插入字符串，是否从剪贴板插入由主函数决定是否c=copyTxt
+void insert(string c) {
+    if (!selected) {
+        txt.insert(now + 1, c);
+        now += c.size();
+    } else {                                                       //如果选中了
+        int ks = min(now, remember) + 1, js = max(now, remember);  // ks是选区第一个字符的下标，js是选区最后一个字符的下标
+        txt.replace(ks, js - ks + 1, c);                           //替换选区内容
+        selected = false;
+        now = ks + c.size() - 1;//更新光标为替换后的字符串的最后一个字符的下标
+    }
+}
+
+void remove(comd com) {
+    if (!selected) {
+        if (com == del) {
+            if (now + 1 != txt.size())
+                txt.erase(now + 1, 1);
+        } else if (com == backspace)
+            if (now != -1)
+                txt.erase(now--, 1);
+    } else {
+        int ks = min(now, remember) + 1, js = max(now, remember);  // ks是选区第一个字符的下标，js是选区最后一个字符的下标
+        txt.erase(ks, js - ks + 1);
+        selected = false;
+        now = ks - 1;
+    }
+}
+
+void find(string word) {
+    int ks = 0, js = txt.size() - 1, cnt = 0, len = word.size();
+    if (selected) {
+        ks = min(now, remember) + 1;
+        js = max(now, remember);
+    }
+    while (ks + len-1 &lt;= js)//有可能选区只有1个字符，然后find也是1个字符
+        if (txt.substr(ks++, len) == word)
+            cnt++;
+    printf(&quot;%d\n&quot;, cnt);
+}
+
+void count() {
+    int ks = 0, js = txt.size() - 1, cnt = 0;
+    if (selected) {
+        ks = min(now, remember) + 1;
+        js = max(now, remember);
+    }
+    while (ks &lt;= js) {
+        if (txt[ks] != '\n' &amp;&amp; txt[ks] != ' ')
+            cnt++;
+        ks++;
+    }
+    printf(&quot;%d\n&quot;, cnt);
+}
+
+void copy() {
+    if (selected) {
+        copyTxt = txt.substr(min(now, remember) + 1, abs(now - remember));
+        haveCopy = true;
+    } else {
+        int saveNow = now;
+        int ks = move(home), num = move(en);
+        now = saveNow;
+        if (num == 0)
+            return;
+        copyTxt = txt.substr(now - ks + 1, num);
+        haveCopy = true;
+    }
+}
+
+int main() {
+    int n;
+    string op, wo, tmp;
+    scanf(&quot;%d&quot;, &amp;n);
+    for (int i = 0; i &lt; n; i++) {
+        cin &gt;&gt; op;
+        if (op == &quot;MOVE&quot;) {
+            cin &gt;&gt; wo;
+            if (wo == &quot;Home&quot;) {
+                move(home);
+            } else if (wo == &quot;End&quot;) {
+                move(en);
+            } else if (wo == &quot;Up&quot;) {
+                move(up);
+            } else if (wo == &quot;Down&quot;) {
+                move(down);
+            } else if (wo == &quot;Left&quot;) {
+                move(le);
+            } else if (wo == &quot;Right&quot;) {
+                move(ri);
+            }
+        } else if (op == &quot;INSERT&quot;) {
+            cin &gt;&gt; wo;
+            if (wo == &quot;Char&quot;) {
+                cin &gt;&gt; tmp;
+                insert(tmp);
+            } else if (wo == &quot;Enter&quot;) {
+                insert(&quot;\n&quot;);
+            } else if (wo == &quot;Space&quot;) {
+                insert(&quot; &quot;);
+            } else if (wo == &quot;Paste&quot;) {
+                if (haveCopy)
+                    insert(copyTxt);
+            }
+        } else if (op == &quot;REMOVE&quot;) {
+            cin &gt;&gt; wo;
+            if (wo == &quot;Del&quot;) {
+                remove(del);
+            } else
+                remove(backspace);
+        } else if (op == &quot;SHIFT&quot;) {
+            if (shifted) {
+                shifted = false;
+                if (remember != now) 
+                    selected = true;
+            } else {
+                shifted = true;
+                if (selected) {
+                    selected = false;
+                } else
+                    remember = now;
+            }
+        } else if (op == &quot;FIND&quot;) {
+            cin &gt;&gt; wo;
+            find(wo);
+        } else if (op == &quot;COUNT&quot;) {
+            count();
+        } else if (op == &quot;COPY&quot;) {
+            copy();
+        } else if (op == &quot;PRINT&quot;) {
+            cout &lt;&lt; txt &lt;&lt; '\n';
+        }
+    }
+    return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+</feed>
