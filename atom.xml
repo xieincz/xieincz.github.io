@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://xieincz.github.io</id>
+    <title>xieincz的博客</title>
+    <updated>2024-11-07T08:04:04.389Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://xieincz.github.io"/>
+    <link rel="self" href="https://xieincz.github.io/atom.xml"/>
+    <subtitle>温故而知新</subtitle>
+    <logo>https://xieincz.github.io/images/avatar.png</logo>
+    <icon>https://xieincz.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2024, xieincz的博客</rights>
+    <entry>
+        <title type="html"><![CDATA[配置win + ubuntu双系统需要注意的一些点]]></title>
+        <id>https://xieincz.github.io/post/pei-zhi-win-ubuntu-shuang-xi-tong-xu-yao-zhu-yi-de-yi-xie-dian/</id>
+        <link href="https://xieincz.github.io/post/pei-zhi-win-ubuntu-shuang-xi-tong-xu-yao-zhu-yi-de-yi-xie-dian/">
+        </link>
+        <updated>2024-11-07T07:41:18.000Z</updated>
+        <content type="html"><![CDATA[<p>基本上是按照B站<a href="https://www.bilibili.com/video/BV1554y1n7zv">机器人工匠阿杰</a>的视频来的，但是有一些需要注意的点值得关注。建议先看完下面的内容再跟着视频进行操作，因为有的步骤造成的影响难以撤销/修改。</p>
+<p>建议先看完<a href="https://www.cnblogs.com/curiositywang/p/17170978.html">这篇经验分享</a>然后再看下面补充的部分。</p>
+<h2 id="gpt分区安装ubuntu">GPT分区安装Ubuntu</h2>
+<p>我使用的系统安装镜像是 <code>ubuntu-24.04.1-desktop-amd64.iso</code> 。在创建分区那一个步骤并没有视频中展示的 <code>用于 EFI系统分区</code> 这个选项。但是经过检查，例如 <code>查看/sys/firmware/efi目录下是否存在 /efi 和 /boot/efi 文件夹。如果这两个文件夹存在，则系统正在使用UEFI启动模式。</code> 已经确认当前的Live CD系统就是在使用UEFI启动模式。也许是版本更新造成的变动？后面我们会发现Ubuntu会自动使用Windows创建的那个EFI分区。<br>
+解决方法很简单：<br>
+我们只需要创建 <code>Swap</code> <code>/</code> <code>/home</code> 这几个分区即可。</p>
+<h2 id="系统时间同步问题">系统时间同步问题</h2>
+<p>视频中用到的 <code>hwclock</code> <a href="https://bugs.launchpad.net/ubuntu/+source/open-vm-tools/+bug/2039206/comments/16">在新版本的Ubuntu中已经不再提供</a> ，例如 <code>Ubuntu 23.10</code> <code>Ubuntu 24.02</code> <code>Ubuntu 24.04.1</code> 。这是因为 Ubuntu 现在使用 systemd 的功能来执行相同的任务。<br>
+解决方法很简单，改为使用下面的命令即可：</p>
+<pre><code class="language-bash">sudo timedatectl set-local-rtc 0
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[大学生如何申请Visa、Mastercard信用卡]]></title>
+        <id>https://xieincz.github.io/post/da-xue-sheng-ru-he-shen-qing-visamastercard-xin-yong-qia/</id>
+        <link href="https://xieincz.github.io/post/da-xue-sheng-ru-he-shen-qing-visamastercard-xin-yong-qia/">
+        </link>
+        <updated>2024-07-31T03:25:52.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="写在前面">写在前面</h2>
+<p>先来说说我申请Visa、Mastercard信用卡的目的：</p>
+<ol>
+<li>积累一些信用记录。</li>
+<li>海淘。比如亚马逊上时不时会有价格实惠（即使算上关税和运费也比国内购买要便宜）的电子产品。</li>
+<li>购买VPS。虽然有的商家也支持支付宝或者PayPal中国版，但是他们的IP基本都被玩坏了，往往要开很多次才能开出一个没被墙的。</li>
+<li>薅GCP、AWS、Azure、甲骨文的羊毛。</li>
+<li>薅信用卡羊毛，比如我办的这两张卡都是免年费以及每笔消费都返现1%而且都没有货币兑换手续费。</li>
+</ol>
+<p>虽然标题说的是学生，但是学生是基本申请不到信用卡的，因为银行都会查你的学信网和征信报告，而不是只看你申请的时候填写的资料。有两个解决方法：①让父母申请，然后开一个附属卡给你用。②在本科毕业后，研究生入学前这段时间进行申请（因为本科入学前往往不满18岁）。本文只讨论方案②。</p>
+<h2 id="中国建设银行龙卡畅享muse信用卡">中国建设银行龙卡畅享MUSE信用卡</h2>
+<p>这个卡是最容易申请的，甚至不需要有建行的借记卡就能成功申请到（而且这个卡是外币消费人民币还款，所以你甚至办一个二类卡就能还款，而不像其他的需要办一类卡购汇来还款），而且额度给得也很大。但是要求学信网上显示已毕业，否则提交不了申请。下载建设银行的APP进行申请即可。这个卡的卡组织只有Visa。<br>
+在写这篇文章的时候又去看了一下，最近又新出了一个“龙卡畅享留学生信用卡”，和Muse一样也是有效期内免年费的，不过能参与的活动有些不同。大家可以根据自己的需要进行选择。</p>
+<h2 id="中国银行卓携留学生信用卡">中国银行卓携留学生信用卡</h2>
+<p>这个卡也是比较容易申请的，下载中国银行的APP进行申请即可。我是中午提交的资料，下午就收到审核通过的短信了，不过额度只有几千。这个卡的卡组织有Visa、Mastercard、UnionPay可选（推荐选Visa或者Mastercard，UnionPay在欧美能用的商家太少了），可以选择外币消费人民币还款或者外币消费用外币还。Visa和Mastercard的是免年费的，UnionPay的需要每年消费满12笔才能免年费，这个在申请的时候要看清楚。</p>
+<h2 id="中国工商银行星座卡">中国工商银行星座卡</h2>
+<p>这个卡据说学信网显示在校也能通过申请，不过额度为0（额度为0可能会导致其他银行误以为你的信用很糟糕，所以工行才会把你的信用卡额度给得这么低，对于以后申请其他信用卡或者房贷车贷带来负面影响），用起来很麻烦（要提前购汇转到信用卡里才能消费），而且会在征信上显示成一大堆信用卡（它每个币种都给你开了一个账户，其他全币种信用卡都只会开一个账户）。这个我就没有申请了。如果实在是需要使用Visa来支付而又申请不到其他的卡，可以试试这卡。</p>
+<h2 id="招商银行全币种visa信用卡">招商银行全币种Visa信用卡</h2>
+<p>大家都说招行最容易给征信白户下卡，但是我申请这个卡好几次了都没有通过审核。可能它还会查社保记录吧。还好招行的这几次失败经历没有影响到后面建行和中行的申请。</p>
+<h2 id="写在最后">写在最后</h2>
+<p>一般网申要比线下申请要更容易通过，而且建议在周末或者工作日的晚上6点~9点申请，次选的时间是午休。其他时间段可能会直接被拒，例如我在周六晚上11点申请了一次建行的，结果凌晨就发来审核不通过的短信，显然是机器审核直接拒了，然后我到第二周的周六中午申请就又通过了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[给Github Desktop设置代理]]></title>
+        <id>https://xieincz.github.io/post/gei-github-desktop-she-zhi-dai-li/</id>
+        <link href="https://xieincz.github.io/post/gei-github-desktop-she-zhi-dai-li/">
+        </link>
+        <updated>2023-11-12T07:46:43.000Z</updated>
+        <content type="html"><![CDATA[<p>因为 Github Desktop 的设置中并没有设置代理的选项，如果我们又不想打开全局代理，就会进入一个很棘手的情况。因为有时候 GitHub 会偶尔连不上，导致 Github Desktop 以为登录信息过期了，但是按照流程再重新登录一次 GitHub 账号仍然会卡在这个阶段。</p>
+<p>不过幸好 Github Desktop 是基于 Electron 开发的。Electron 的应用有个特性，就是启动的时候可以通过 <code>--proxy-server=&quot;http://127.0.0.1:1080&quot;</code> 这样的参数设置代理服务器。</p>
+<p>因此，我们只需要右键点击 Github Desktop 的快捷方式，点击“属性”。然后在打开的窗口里切换到“快捷方式”这一栏。然后在“目标”这个输入框的内容的最后加上 <code> --proxy-server=&quot;http://127.0.0.1:1080&quot;</code> （这个代理地址需要根据你自己的情况进行修改，注意要在 <code>--proxy-server</code> 的前面加一个空格）。然后点“确定”来保存更改。用这个快捷方式来打开 Github Desktop 就能让 Github Desktop 通过这个代理来访问互联网了。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[huggingface-go : 加速下载huggingface的模型和数据集]]></title>
+        <id>https://xieincz.github.io/post/huggingface-go-jia-su-xia-zai-huggingface-de-mo-xing-he-shu-ju-ji/</id>
+        <link href="https://xieincz.github.io/post/huggingface-go-jia-su-xia-zai-huggingface-de-mo-xing-he-shu-ju-ji/">
+        </link>
+        <updated>2023-10-21T04:44:37.000Z</updated>
+        <content type="html"><![CDATA[<p>无需消耗机场的流量。0成本高速下载huggingface上动辄数十GB的数据集和模型。</p>
+<h2 id="使用方法">使用方法</h2>
+<pre><code class="language-bash">wget https://mirror.ghproxy.com/https://github.com/xieincz/huggingface-go/releases/latest/download/huggingface_go_linux_amd64
+mv huggingface_go_linux_amd64 huggingface_go
+chmod +x huggingface_go
+
+#使用方法： huggingface_go -u huggingface的模型/数据集链接 -f (可选)要保存的位置，可以是文件夹名字也可以是路径 -p (可选)代理链接(如果填写，必须以 / 结尾)
+#例如：想要下载 https://huggingface.co/NousResearch/Llama-2-13b-hf 这个模型
+#使用方法一：通过镜像站 https://hf-mirror.com 下载
+./huggingface_go -u https://hf-mirror.com/NousResearch/Llama-2-13b-hf/tree/main -f /path/to/your/folder
+
+#使用方法二：通过代理链接从huggingface下载
+./huggingface_go -u https://huggingface.co/NousResearch/Llama-2-13b-hf/tree/main -f /path/to/your/folder -p https://worker-share-proxy-3y2sz7.xieincz.eu.org/
+</code></pre>
+<p>更多操作系统/CPU架构的版本可以到我的GitHub仓库下载：<a href="https://github.com/xieincz/huggingface-go">https://github.com/xieincz/huggingface-go</a><br>
+如果对你有帮助的话，不妨点个star😊</p>
+<h2 id="创建自己的代理链接">创建自己的代理链接</h2>
+<p>博主提供的代理链接用的是cloudflare的免费版套餐，每日只有10万次请求的额度，如果有很多人用就很容易超过这个额度。所以创建一个自己的代理链接就很有必要了。根据我自己的使用经验，下载一个数据集大约要消耗80次请求。<br>
+要开始下面的步骤，你需要有：</p>
+<ol>
+<li>
+<p>一个cloudflare账号（打开 <a href="https://dash.cloudflare.com/sign-up">https://dash.cloudflare.com/sign-up</a> 来免费注册一个）</p>
+</li>
+<li>
+<p>一个绑定到cloudflare账号的域名（ <a href="https://nic.eu.org/">https://nic.eu.org/</a> 可以注册免费的域名，然后将其添加到cloudflare账号中即可）</p>
+</li>
+</ol>
+<h3 id="创建worker">创建worker</h3>
+<ol>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/workers/new">https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/workers/new</a></p>
+</li>
+<li>
+<p>名称可以自己填个喜欢的。比如 <code>worker-share-proxy-3y2sz7</code> ，然后点击右下角的“部署”。</p>
+</li>
+<li>
+<p>然后打开刚才创建的worker修改代码。<br>
+可以点这个链接直达修改页面（如果你第二步的名称和我的不同，记得修改） <a href="https://dash.cloudflare.com/?to=/:account/workers/services/edit/worker-share-proxy-3y2sz7/production">https://dash.cloudflare.com/?to=/:account/workers/services/edit/worker-share-proxy-3y2sz7/production</a></p>
+</li>
+<li>
+<p>将原有的代码全部删除，然后将下面这段代码复制粘贴到第三步打开的网页中。然后点击右上角的“保存并部署”。</p>
+</li>
+</ol>
+<pre><code class="language-js">'use strict'
+const ASSET_URL = 'https://hunshcn.github.io/gh-proxy/'
+const PREFIX = '/'
+const Config = {
+    jsdelivr: 0
+}
+const whiteList = [] // 白名单，路径里面有包含字符的才会通过，e.g. ['/username/']
+const PREFLIGHT_INIT = {
+    status: 204,
+    headers: new Headers({
+        'access-control-allow-origin': '*',
+        'access-control-allow-methods': 'GET,POST,PUT,PATCH,TRACE,DELETE,HEAD,OPTIONS',
+        'access-control-max-age': '1728000',
+    }),
+}
+const exp1 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:releases|archive)\/.*$/i
+const exp2 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:blob|raw)\/.*$/i
+const exp3 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i
+const exp4 = /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i
+const exp5 = /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i
+const exp6 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i
+function makeRes(body, status = 200, headers = {}) {
+    headers['access-control-allow-origin'] = '*'
+    return new Response(body, {status, headers})
+}
+function newUrl(urlStr) {
+    try {
+        return new URL(urlStr)
+    } catch (err) {
+        return null
+    }
+}
+addEventListener('fetch', e =&gt; {
+    const ret = fetchHandler(e)
+        .catch(err =&gt; makeRes('cfworker error:\n' + err.stack, 502))
+    e.respondWith(ret)
+})
+function checkUrl(u) {
+    for (let i of [exp1, exp2, exp3, exp4, exp5, exp6]) {
+        if (u.search(i) === 0) {
+            return true
+        }
+    }
+    return false
+}
+const customProxyDomainArray=[
+    /^(?:https?:\/\/).*$/i
+]
+function checkCustomUrl(u) {
+    for (let i of customProxyDomainArray ) {
+        if (u.search(i) === 0) {
+            return true
+        }
+    }
+    return false
+}
+async function fetchHandler(e) {
+    const req = e.request
+    const urlStr = req.url
+    const urlObj = new URL(urlStr)
+    let path = urlObj.searchParams.get('q')
+    if (path) {
+        return Response.redirect('https://' + urlObj.host + PREFIX + path, 301)
+    }
+    path = urlObj.href.substr(urlObj.origin.length + PREFIX.length).replace(/^https?:\/+/, 'https://')
+    if (path.search(exp1) === 0 || path.search(exp5) === 0 || path.search(exp6) === 0 || path.search(exp3) === 0 || path.search(exp4) === 0) {
+        return httpHandler(req, path)
+    } else if (path.search(exp2) === 0) {
+        if (Config.jsdelivr) {
+            const newUrl = path.replace('/blob/', '@').replace(/^(?:https?:\/\/)?github\.com/, 'https://cdn.jsdelivr.net/gh')
+            return Response.redirect(newUrl, 302)
+        } else {
+            path = path.replace('/blob/', '/raw/')
+            return httpHandler(req, path)
+        }
+    } else if (path.search(exp4) === 0) {
+        const newUrl = path.replace(/(?&lt;=com\/.+?\/.+?)\/(.+?\/)/, '@$1').replace(/^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com/, 'https://cdn.jsdelivr.net/gh')
+        return Response.redirect(newUrl, 302)
+    } else if (checkCustomUrl(path)) {
+        return httpHandler(req, path)
+    } else {
+        return fetch(ASSET_URL + path)
+    }
+}
+function httpHandler(req, pathname) {
+    const reqHdrRaw = req.headers
+    if (req.method === 'OPTIONS' &amp;&amp;
+        reqHdrRaw.has('access-control-request-headers')
+    ) {
+        return new Response(null, PREFLIGHT_INIT)
+    }
+    const reqHdrNew = new Headers(reqHdrRaw)
+    let urlStr = pathname
+    let flag = !Boolean(whiteList.length)
+    for (let i of whiteList) {
+        if (urlStr.includes(i)) {
+            flag = true
+            break
+        }
+    }
+    if (!flag) {
+        return new Response(&quot;blocked&quot;, {status: 403})
+    }
+    if (urlStr.startsWith('github')) {
+        urlStr = 'https://' + urlStr
+    }
+    const urlObj = newUrl(urlStr)
+    const reqInit = {
+        method: req.method,
+        headers: reqHdrNew,
+        redirect: 'manual',
+        body: req.body
+    }
+    return proxy(urlObj, reqInit)
+}
+async function proxy(urlObj, reqInit) {
+    const res = await fetch(urlObj.href, reqInit)
+    const resHdrOld = res.headers
+    const resHdrNew = new Headers(resHdrOld)
+    const status = res.status
+    if (resHdrNew.has('location')) {
+        let _location = resHdrNew.get('location')
+        if (checkUrl(_location))
+            resHdrNew.set('location', PREFIX + _location)
+        else {
+            reqInit.redirect = 'follow'
+            return proxy(newUrl(_location), reqInit)
+        }
+    }
+    resHdrNew.set('access-control-expose-headers', '*')
+    resHdrNew.set('access-control-allow-origin', '*')
+    resHdrNew.delete('content-security-policy')
+    resHdrNew.delete('content-security-policy-report-only')
+    resHdrNew.delete('clear-site-data')
+    return new Response(res.body, {
+        status,
+        headers: resHdrNew,
+    })
+}
+</code></pre>
+<ol start="5">
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/worker-share-proxy-3y2sz7/production/settings/triggers">https://dash.cloudflare.com/?to=/:account/workers/services/view/worker-share-proxy-3y2sz7/production/settings/triggers</a><br>
+（注意更改链接中的 <code>worker-share-proxy-3y2sz7</code> ），点击“添加自定义域”，输入 <code>worker-share-proxy-3y2sz7.xieincz.eu.org</code> （这个 <code>xieincz.eu.org</code> 要换成你绑定到cloudflare的域名），然后保存。</p>
+</li>
+<li>
+<p>稍等几分钟，打开第五步输入的网址。如果看到一个输入框和一个按钮，恭喜你，已经成功完成了这个教程。<br>
+你可以将此时浏览器的地址栏中的网址（形如 <code>https://worker-share-proxy-3y2sz7.xieincz.eu.org/</code> ）用作huggingface-go的代理链接。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[利用 Remotely Save 通过 Cloudflare R2 (S3 API) 在多个设备同步 Obsidian]]></title>
+        <id>https://xieincz.github.io/post/li-yong-remotely-save-tong-guo-cloudflare-r2-s3-api-zai-duo-ge-she-bei-tong-bu-obsidian/</id>
+        <link href="https://xieincz.github.io/post/li-yong-remotely-save-tong-guo-cloudflare-r2-s3-api-zai-duo-ge-she-bei-tong-bu-obsidian/">
+        </link>
+        <updated>2023-10-06T13:43:53.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>Obsidian 提供了付费的同步服务，不过要 $8 每月。我们可以利用 Remotely Save 通过 Cloudflare R2 (S3 API) 在多个设备同步 Obsidian，而且不用花一分钱。</p>
+<p>Cloudflare R2 是一个类似于 AWS S3 这样的服务。不过 R2 提供了相当可观的免费额度，而且也较为容易获得（只需要一张普通的借记卡，然后注册 PayPal 中国账号，然后在 Cloudflare 添加 PayPal 作为付款方式即可）。下面是 <a href="https://developers.cloudflare.com/r2/pricing/#r2-pricing">Cloudflare R2 的定价表</a>。</p>
+<h3 id="r2-pricing">R2 pricing</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Free</th>
+<th>Paid - Rates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Storage</td>
+<td>10 GB / month</td>
+<td>$0.015 / GB-month</td>
+</tr>
+<tr>
+<td>Class A Operations</td>
+<td>1 million requests / month</td>
+<td>$4.50 / million requests</td>
+</tr>
+<tr>
+<td>Class B Operations</td>
+<td>10 million requests / month</td>
+<td>$0.36 / million requests</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：“Class A Operations” 可以近似理解为 “写入“，“Class B Operations” 可以近似理解为 “读取“。可以看到，流量是不计费的。而且每月存储 10GB 以内，写入次数在一百万次以内，读取次数在一千万次以内是不会产生费用的。</p>
+</blockquote>
+<h2 id="创建-r2-存储桶">创建 R2 存储桶</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/new">https://dash.cloudflare.com/?to=/:account/r2/new</a> .</p>
+</li>
+<li>
+<p>为这个桶设置一个名字（例如 <code>obsidian-paper</code> ，这个名字在后续会用到）然后点击 <strong>Create bucket</strong>.</p>
+</li>
+</ol>
+<h2 id="获取-endpoint">获取 Endpoint</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/default/buckets/obsidian-paper/settings">https://dash.cloudflare.com/?to=/:account/r2/default/buckets/obsidian-paper/settings</a><br>
+（注意：该链接中的  <code>obsidian-paper</code> 要替换成你自己的桶的名字）</p>
+</li>
+<li>
+<p>在 <strong>Bucket Details</strong> 这一栏中找到 <strong>S3 API</strong><br>
+（形如 <code>https://xxx.r2.cloudflarestorage.com/obsidian-paper</code> ）</p>
+</li>
+<li>
+<p>则 <code>https://xxx.r2.cloudflarestorage.com</code> 就是我们要的 Endpoint.</p>
+</li>
+</ol>
+<h2 id="获取-accesskeyid-和-secretaccesskey">获取 AccessKeyID 和 SecretAccessKey</h2>
+<ol>
+<li>
+<p>登录到 <a href="https://dash.cloudflare.com/">Cloudflare dashboard</a>.</p>
+</li>
+<li>
+<p>打开 <a href="https://dash.cloudflare.com/?to=/:account/r2/api-tokens/create">https://dash.cloudflare.com/?to=/:account/r2/api-tokens/create</a> .</p>
+</li>
+<li>
+<p>在 <strong>Permissions</strong> 这栏中选择 <strong>Admin Read &amp; Write</strong>.</p>
+</li>
+<li>
+<p>点击下方的 <strong>Create API Token</strong>.</p>
+</li>
+<li>
+<p>在新加载的页面中就可以找到 <strong>AccessKeyID</strong> 和 <strong>SecretAccessKey</strong></p>
+</li>
+<li>
+<p>点击下方的 <strong>Finish</strong>.</p>
+</li>
+</ol>
+<h2 id="remotely-save-插件">Remotely Save 插件</h2>
+<h3 id="安装">安装</h3>
+<p>在 Obsidian 的插件市场中搜索 <strong>Remotely Save</strong> 然后下载并启用。</p>
+<h3 id="在电脑进行配置">在电脑进行配置</h3>
+<ol>
+<li>
+<p>打开 Remotely Save 插件的设置页面。</p>
+</li>
+<li>
+<p>Endpoint、Bucket的名字、AccessKeyID 和 SecretAccessKey 按照上文所述的方法获取。</p>
+</li>
+<li>
+<p>Region 填写为 <code>us-east-1</code> 即可。</p>
+</li>
+<li>
+<p>S3 URL style 设置为 <strong>Path-Style</strong>.</p>
+</li>
+<li>
+<p>（可选）根据需要设置密码，以及自动同步的间隔（就算每分钟进行一次同步也难以用完每月一百万次的写入操作）</p>
+</li>
+<li>
+<p>在 导入导出部分设置 这一栏中，点击 <strong>生成 QR 码</strong> ，然后点击 <strong>点击此按钮复制特殊 URL</strong>  得到形如 <code>obsidian://remotely-save?xxxxxxx</code> 的链接。</p>
+</li>
+</ol>
+<h3 id="在手机-平板进行配置">在手机、平板进行配置</h3>
+<ol>
+<li>
+<p>要创建一个名称相同的库（例如电脑中 Obsidian 的库的名字是repo1，那么在其他设备上也要用这个名字），并且安装这个 Remotely Save 插件。</p>
+</li>
+<li>
+<p>在手机、平板中打开上文得到的形如 <code>obsidian://remotely-save?xxxxxxx</code> 的链接即可，如果不行就手动将 <strong>在电脑进行配置</strong> 章节提到的信息在手机、平板的 Obsidian 中再填写一次。</p>
+</li>
+</ol>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2023计算机0科研的保研边缘人的挣扎之路（哈深、中大、华南理工、山大）]]></title>
+        <id>https://xieincz.github.io/post/2023-ji-suan-ji-0-ke-yan-de-bao-yan-bian-yuan-ren-de-zheng-zha-zhi-lu-ha-shen-zhong-da-hua-nan-li-gong-shan-da/</id>
+        <link href="https://xieincz.github.io/post/2023-ji-suan-ji-0-ke-yan-de-bao-yan-bian-yuan-ren-de-zheng-zha-zhi-lu-ha-shen-zhong-da-hua-nan-li-gong-shan-da/">
+        </link>
+        <updated>2023-10-02T07:55:02.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="个人情况">个人情况</h2>
+<p>本科院校：次九，计算机科学与技术专业</p>
+<p>英语水平：四级540+，六级500+</p>
+<p>竞赛奖项：几个水赛的奖，无国奖</p>
+<p>科研经历：无科研、无成果、无论文的三无人员</p>
+<p>最终去向：哈工深cs学硕</p>
+<h2 id="自我评估">自我评估</h2>
+<p>由于自己本科背景并不占优势，rk也不够高，不敢碰瓷清北这种学校，而且自己在缺乏科研经历的情况下，对于直博有点担心未来会不会落得竹篮打水一场空。因此最开始就给自己的目标定在了华五or中九的专硕和学硕。</p>
+<p>由于本人家在南方，因此投递的时候重点会在南方的学校，最终去向也倾向于南方的学校。所以北方以及中西部的院校都没有投。（建议后来的学弟学妹们如果确定自己一定不想去这个学校，就不要投。终结海王，从你我他做起。）</p>
+<h2 id="夏0营-夏令营"><s>夏0营</s> 夏令营</h2>
+<p>身边rk高的同学基本5月开始报名，就陆陆续续开始面试了，但是我当时的rk甚至连保研机会都不知道有没有🤣，而且很多学校就只让同一学校的一两个人入营，我的rk靠后，本专业和隔壁专业的高rk同学的优先级都比我高。所以夏令营只报了本校（因为她在报名页面注明了本校学生不会占用入营名额）。不过入营了才知道本校的这次夏令营其实是宣讲营。所以我的夏令营其实是夏0营。在同学们在报名各种夏令营的时候，我就认真地准备第6学期的期末考试，争取把rk再提一提。暑假在等待期末考试成绩的期间，我就一直在准备考研。后来通过了解隔壁专业的低rk同学的入营情况才发现情况和我预期的差不多。他们基本都只入了那些海王营，比如东南、天大之类的。</p>
+<h2 id="预推免">预推免</h2>
+<p>在八月初的时候，第6学期的期末考试成绩终于出完了。之前一直悬着的心终于放了下来，rk成功提升到了第4，只要今年的保研政策不要大改就能稳稳获得推免资格。然后我就花了一周的时间，将这两年的保研经验贴都刷了一遍，在收集信息的同时也顺便找出自己的定位。原来我真的很菜。科研竞赛绩点都没一个拿得出手的。唯一能说道说道的就是工程能力。可惜根据这些经验帖，目前老师们还是偏好科研多一些。然后我就又花了一周去准备好各种文书，准备在预推免海投，否则以我这个履历真的没什么机会。又花了一个星期复习面试可能会问的专业问题，9月就来临了。</p>
+<p>大家都说预推免的bar会降低，90%的人是预推免上岸的。虽然我也是这90%，但是也不要过于乐观，预推免的招生名额相比夏令营都会少很多（有些学校甚至在夏令营就把名额招满了），而且一些之前不确定有保研资格的人以及夏令营拿到保底offer打算在预推免冲一冲的人，这一阶段也会参与到竞争里，所以预推免阶段千万不要莫名自信，做好一定的心理准备，预推免全寄是完全有可能的。在这个阶段，如果你没有保底offer而且rk之类的也比较低，就最好遵循“应报尽报，不漏一校”这个原则。因为就算前面高rk的同学每人只投两三所学校，但也足以覆盖相当多的学校了（要考虑到本校其他非计算机专业的top也会来卷计算机）。</p>
+<h3 id="哈工深">哈工深</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：录取</p>
+<p>哈工深是第一个给我发面试通知的（而且也是我在预推免阶段拿到的最好的了）。九月的前半段我几乎每天都在0offer0入营的焦虑之中，哈工深的这个面试通知算是将我从这段糟糕的状态中拉上来了吧。回到广东后，终于吃上了怀念了大半年的肠粉😊。在这里建议大家最好提前找几个朋友来几次模拟面试（尤其是压力面），不要像我一样到了面试的时候一紧张就什么都忘了。</p>
+<h3 id="中大">中大</h3>
+<p><strong>专业</strong>：电子信息（计算机技术）<br>
+<strong>最终结果</strong>：预推免成绩前10（由于夏令营鸽子太多，这个排名其实约等于offer了）</p>
+<p>在参加哈工深面试期间我也收到了中大cs的复试通知。中大其实夏令营就已经把所有学硕、专硕的名额都录完了（而且还有将近50人的wl）。所以预推免的时候是一个offer都没有的，相当于是wl的wl🤣。负责招生的老师也在群里不断强调了这点。不过随着🕊们的发力，终于在复试开始那天将夏令营的wl消耗完。需要注意的是，机试虽然明确说了不占成绩，但是面试的时候老师们都会看到的，这也许会在某种程度上影响到面试得分。我就是因为机试得分比较高，被老师夸了一顿😊。</p>
+<h3 id="华南理工">华南理工</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：入营，但是因为和山大时间冲突就放弃了</p>
+<h3 id="山大">山大</h3>
+<p><strong>专业</strong>：计算机科学与技术<br>
+<strong>最终结果</strong>：入营，但是因为机试开始前的那个中午，中大的预推免成绩就出来了，所以就放弃了</p>
+<h3 id="全寄德-没进入复试的学校"><s>全寄德</s> 没进入复试的学校</h3>
+<p>中科大x3、浙大x2、南大x3、同济cs、复旦cs、中大se、华东师范cs</p>
+<h2 id="写在最后">写在最后</h2>
+<p>929果然一如既往的鸽子满天飞，好多学校都鸽穿了。中大cs也是，夏令营里排名100+的都上岸学硕了，预推免也录到了最后一名😂。就连🥚的九推都开到第4批了，甚至在通知里说“报名系统一直开放，录满为止”。只要你敢等，真是什么奇迹都会发生🤣。</p>
+<p>我929当天是把中大和哈工深都填了，当时想法是哈工深不录我（因为当时有小道消息说哈工深超发offer了）就去中大（因为中大先录完夏令营，然后录预推免直博，最后才是预推免专硕。要等很久才会录到我）。最后也是非常之刺激，两所学校都在12点多就发了复试通知，但是到两点的时候都还没有发拟录取通知。我一直在想，如果中大先发了拟录取要不要接受。不过还好先等来了哈工深的，然后我就赶紧和中大的教务说明情况放弃中大的候补资格了。</p>
+<p>上岸之后，总感觉这一切都太快了。看到身边的大佬们个个手握清北华五的待录取，我也清楚地知道自己和他们之间的差距，不过能有这个结果，对我来说也是冲上梦校梦导了。最后来一段保研er老生常谈的 <s>赌狗圣经</s> 保研圣经。</p>
+<h3 id="赌狗圣经-保研圣经"><s>赌狗圣经</s> 保研圣经</h3>
+<ol>
+<li>年年如此，底层逻辑没变的，运气是对勇敢者的馈赠。</li>
+<li>大部分人就是忍不住，害怕没学上，去一个不满意的学校后悔三年。</li>
+<li>保研资格就是你最大的筹码，大家都是三个志愿，畏畏缩缩只会失去机会，20岁不搏一下，等30岁吗？</li>
+<li>10月20多才关保研系统，20多天足够你联系大部分导师了，没有风险就没有收益。</li>
+<li>自己心里有个高度的呀，随便上个学校，对得起三年努力的自己吗？</li>
+<li>预推免形式差没关系，就像人起跳的时候，要先下蹲。</li>
+<li>现在offer越集中越是利好，无论别人再厉害都只能去一个学校，剩下的都是留给我的。别人越恐慌，我越兴奋，我知道机会是留给勇敢者的。</li>
+<li>9月29之后，重新洗牌。</li>
+<li>没有勇气的人都会出局，机会就在这里，就看你把不把握得住，上个中九还是华五，就是看你的心态。</li>
+</ol>
+<p>现在看来，保研圣经仍然适用。如果你夏令营和预推免真的一个offer都没有，不要自暴自弃，好好准备，929之后上岸清北华五都是可能的。</p>
+<p>最后祝愿所有保研er都能心想事成，在929上岸梦校！</p>
+<p>保研顶流绿裙群号：</p>
+<ul>
+<li>全国最大非商业用爱交流计算机保研交流群1：943826679</li>
+<li>全国最大非商业用爱交流计算机保研交流群2：620876705</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Linux system monitor —— 适合树莓派的系统信息监视器]]></title>
+        <id>https://xieincz.github.io/post/linux-system-monitor-gua-he-shu-mei-pai-de-xi-tong-xin-xi-jian-shi-qi/</id>
+        <link href="https://xieincz.github.io/post/linux-system-monitor-gua-he-shu-mei-pai-de-xi-tong-xin-xi-jian-shi-qi/">
+        </link>
+        <updated>2023-08-31T01:52:30.000Z</updated>
+        <content type="html"><![CDATA[<p>由于我在树莓派4B上跑了各种服务，仅有的1GB内存已经所剩无几。为了能监控树莓派的各项信息，同时又要考虑到SD卡的寿命（我的树莓派的系统盘是一张已经十几岁“高龄”的SD卡）。所以只能自己实现一个资源占用低，写入少的系统信息监视器。</p>
+<h2 id="用到的接口">用到的接口</h2>
+<p>由于Linux万物皆文件。所以传感器信息等都能从某个文件中读取。</p>
+<h3 id="cpu温度">CPU温度</h3>
+<p>树莓派只有这个温度传感器。<br>
+读取<code>/sys/class/thermal/thermal_zone0/temp</code>这个文件即可。将读出来的数值除以1000就是摄氏度了。</p>
+<h3 id="cpu使用率">CPU使用率</h3>
+<p>读取<code>/proc/stat</code>。<br>
+各列分别为<code>name   user  nice   system      idle      iowait  irrq  softirq  steal guest guest_nice</code>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">cpu指标</th>
+<th>含义</th>
+<th>时间单位</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">user</td>
+<td>用户态时间</td>
+<td>jiffies</td>
+<td>一般/高优先级，仅统计nice&lt;=0</td>
+</tr>
+<tr>
+<td style="text-align:center">nice</td>
+<td>nice用户态时间</td>
+<td>jiffies</td>
+<td>低优先级，仅统计nice&gt;0</td>
+</tr>
+<tr>
+<td style="text-align:center">system</td>
+<td>内核态时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">idle</td>
+<td>空闲时间</td>
+<td>jiffies</td>
+<td>不包含IO等待时间</td>
+</tr>
+<tr>
+<td style="text-align:center">iowait</td>
+<td>I/O等待时间</td>
+<td>jiffies</td>
+<td>硬盘IO等待时间</td>
+</tr>
+<tr>
+<td style="text-align:center">irq</td>
+<td>硬中断时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">softirq</td>
+<td>软中断时间</td>
+<td>jiffies</td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center">steal</td>
+<td>被盗时间</td>
+<td>jiffies</td>
+<td>虚拟化环境中运行其他操作系统上花费的时间（since Linux 2.6.11）</td>
+</tr>
+<tr>
+<td style="text-align:center">guest</td>
+<td>来宾时间</td>
+<td>jiffies</td>
+<td>操作系统运行虚拟CPU花费的时间(since Linux 2.6.24)</td>
+</tr>
+<tr>
+<td style="text-align:center">guest_nice</td>
+<td>nice来宾时间</td>
+<td>jiffies</td>
+<td>运行一个带nice值的guest花费的时间(since Linux 2.6.33)</td>
+</tr>
+</tbody>
+</table>
+<p>说明：<br>
+1、1 jiffies = 0.01s = 10ms<br>
+2、常用计算等式：CPU时间 = user + system + nice + idle + iowait + irq + softirq<br>
+3、man手册中iowait有单独说明，iowait时间是不可靠值，具体原因如下：<br>
+1）CPU不会等待I/O执行完成，而iowait是等待I/O完成的时间。<br>
+当CPU进入idle状态，很可能会调度另一个task执行，所以iowait计算时间偏小；<br>
+2）多核CPU中，iowait的计算并非某一个核，因此计算每一个cpu的iowait非常困难<br>
+3）这个值在某些情况下会减少</p>
+<p>我采用<code>100.0 - (100.0 * idle) / (user + nice + system + idle + iowait + irq + softirq + steal + guest + guest_nice)</code>计算CPU当前的使用率。</p>
+<h3 id="内存使用率">内存使用率</h3>
+<p>读取<code>/proc/meminfo</code>。<br>
+我采用<code>100.0 * (memTotal - memAvailable) / memTotal</code>计算内存使用率。</p>
+<h2 id="实现方式">实现方式</h2>
+<p>其实就是一个 while(ture) ，然后每次 sleep 1秒再获取数据并保存到内存中。每隔一段时间将数据写入SD卡。虽然写入次数还是很多，但是由于集中写入的缘故，碎片化会大幅减少，而由于碎片导致的寿命损耗也会减少（具体参见闪存对一块只存了部分数据的block是如何新添数据的）。为了降低内存使用率，我采用C++编写这个程序。</p>
+<p>最后，这个项目开源在 <a href="https://github.com/xieincz/Linux-system-monitor">https://github.com/xieincz/Linux-system-monitor</a></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qt Creator 使用过程中的一些技巧&注意事项]]></title>
+        <id>https://xieincz.github.io/post/qt-creator-shi-yong-guo-cheng-zhong-de-yi-xie-ji-qiao-zhu-yi-shi-xiang/</id>
+        <link href="https://xieincz.github.io/post/qt-creator-shi-yong-guo-cheng-zhong-de-yi-xie-ji-qiao-zhu-yi-shi-xiang/">
+        </link>
+        <updated>2023-04-23T03:03:50.000Z</updated>
+        <content type="html"><![CDATA[<p>1.将构建目录设置成项目文件夹，而不是在项目文件夹外。可以避免（将概率降低到趋近于零）随机出现的构建失败（例如nikka 的 subcommand 出错）。</p>
+<p>2.用图形化界面来创建ui的时候。如果要让一个widget中的控件随这个widget的尺寸变化自动适应位置和尺寸。可以直接在预览窗口点击那个widget（注意不是右边那个树形列表），然后Creator上面那栏中的按钮就会变成可点击，我们可以根据需要设置想要的layout。</p>
+<p>3.如果发现某个控件的大小总是不能铺满理想中的区域。可能是旁边的控件占用面积的大小限制了它的尺寸（因为会自动对齐各个控件），可以用弹簧把旁边的控件的控件拉大。</p>
+<p>4.如果使用“提升到”功能，在编译的时候提示“ui_xxx.h”找不到自己提升到的类的头文件。可以把自己的头文件按照现有的目录结构复制到“cryo_EM_autogen\include”下面。例如继承自“QWeight”的类“MyWeight”（位于“项目根目录\lib\myweight.h”），我们将“lib”文件夹直接复制到“cryo_EM_autogen\include”中然后再编译即可（不过如果修改了文件还要再重新复制一次）。其实更方便的做法是创建符号链接，例如使用这个命令（需要以管理员身份运行）</p>
+<pre><code class="language-cmd">mklink /d &quot;E:\Temp\Qt-dev\build-cryo_EM-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\cryo_EM_autogen\include\lib&quot; &quot;E:\Temp\Qt-dev\cryo_EM\lib&quot;
+</code></pre>
+<p>不过前面这两个方法在执行cmake的clean之后都要重新做一遍。最好的方法是修改cmakelist，等我过一段时间有空了再更新这个方法。</p>
+<p>5.使用“提升到”功能的时候，要提升的qt类必须是你自己定义的那个类的基类。比如你拖了一个QWeight到界面中，你只能将它提升到自己写的继承自QWeight的MyWeight，而不能将一个QGraphicsView组件提升到你写的这个MyWeight。</p>
+<p>6.关于“qtcreator_ctrlc_stub: Command line failed”这个错误，其实用命令行手动进行编译和运行就好了。似乎是qtcreator_ctrlc_stub创建进程失败就会出现这个报错。刚重启完操作系统那会基本不会遇到这个错误，但是随着系统运行时间变长，这个错误的出现概率就会大大增加。最后会出现连续点几十下“构建”或者“运行”都是这个错误，大大影响了开发效率以及开发人员的心态 😦</p>
+<pre><code class="language-bash">#报错信息长这样
+16:08:26: 为项目myOpenGL5执行步骤 ...
+16:08:26: 正在启动 &quot;D:\Qt\Tools\CMake_64\bin\cmake.exe&quot; --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+
+qtcreator_ctrlc_stub: Command line failed: D:\Qt\Tools\CMake_64\bin\cmake.exe --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+16:08:27: 进程&quot;D:\Qt\Tools\CMake_64\bin\cmake.exe&quot;退出，退出代码 -1 。
+Error while building/deploying project myOpenGL5 (kit: Desktop Qt 6.5.0 MinGW 64-bit)
+When executing step &quot;构建&quot;
+16:08:27: Elapsed time: 00:01.
+</code></pre>
+<pre><code class="language-bash">#解决方法
+
+#复制可能要用的头文件等文件(这里的命令都是Windows下的，如果是Linux或者其他系统请自行更改)(注意，如果使用这个命令手动复制文件，最好不要再使用前面提到的“创建符号链接”了。因为会报错“共享冲突”要删除创建的符号链接才能正常复制)
+xcopy E:\Temp\Qt-dev\myOpenGL5 E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\myOpenGL5_autogen\include /Y /S
+
+#调用cmake进行构建
+D:\Qt\Tools\CMake_64\bin\cmake.exe --build E:/Temp/Qt-dev/build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug --target all
+
+#运行构建出来的Qt应用程序
+cd E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug &amp;&amp; E: &amp;&amp; E:\Temp\Qt-dev\build-myOpenGL5-Desktop_Qt_6_5_0_MinGW_64_bit-Debug\myOpenGL5.exe
+
+</code></pre>
+<p>7.在6中我们通过手动执行命令来绕过“qtcreator_ctrlc_stub”导致的问题。但是我们看不到程序运行过程中的调试信息了。例如qDebug等等。我们可以在CMakeLists.txt中找到“WIN32_EXECUTABLE TRUE”这行，在它开头加上井号“#”将它注释掉。变成“#WIN32_EXECUTABLE TRUE”。然后就没问题了。。接下来在cmd中运行编译后的程序即可在cmd中看到输出。完成程序的最后测试之后记得要取消掉这个注释。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ubuntu 20.04 安装 Qt]]></title>
+        <id>https://xieincz.github.io/post/ubuntu-2004-an-zhuang-qt/</id>
+        <link href="https://xieincz.github.io/post/ubuntu-2004-an-zhuang-qt/">
+        </link>
+        <updated>2023-04-14T07:05:34.000Z</updated>
+        <content type="html"><![CDATA[<p>理论上22.04也可以（不过由于Wayland导致的诸多问题，省时省力的方法就是先用着20.04）</p>
+<h2 id="安装必要的软件包">安装必要的软件包</h2>
+<pre><code class="language-bash">sudo apt update
+sudo apt install libxcb-xinerama0 -y
+sudo apt install build-essential -y
+sudo apt install libgl1-mesa-dev -y
+sudo apt install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev -y
+</code></pre>
+<h2 id="安装qt">安装Qt</h2>
+<p>从官网上下载可执行文件然后运行即可（记得用&quot;chmod 775 filename&quot;给它赋予可执行权限）</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qt Creator 配置 git]]></title>
+        <id>https://xieincz.github.io/post/qt-creator-pei-zhi-git/</id>
+        <link href="https://xieincz.github.io/post/qt-creator-pei-zhi-git/">
+        </link>
+        <updated>2023-04-09T13:00:09.000Z</updated>
+        <content type="html"><![CDATA[<p>1.安装git，并且将git安装目录的bin目录添加到系统path中。<br>
+2.Qt Creator中像往常那样新建一个项目。如果是要添加现有的项目到git中就可以跳过此步。<br>
+3.GitHub创建一个仓库。<br>
+4.cmd中依次执行以下命令：</p>
+<pre><code class="language-cmd">git config --global user.name &quot;你自己的用户名&quot;
+git config --global user.email &quot;你自己的邮箱&quot;
+
+#生成密匙，注意参数大小写并且不要设置密码（直接回车）。生成后的公匙文件在 C:\Users\用户名\.ssh\id_rsa.pub
+ssh-keygen -t rsa -C&quot;你自己的邮箱&quot;
+
+#打开密匙文件并复制其中内容将该密匙添加到github  (Settings-&gt; SSH and GPG keys-&gt; new SSH key），然后添加公共密钥
+
+#到Qt项目的目录中
+git init
+git remote add origin git@github.com:你的用户名/你的仓库名.git
+git add -A     #添加所有文件
+git commit -m &quot;第一次上传&quot;   #写上修改说明
+git push -u origin master   #上传至仓库
+
+</code></pre>
+<p>5.之后每次push可以在Qt Creator中的“工具”-&gt;“Git”中操作即可</p>
+]]></content>
+    </entry>
+</feed>
